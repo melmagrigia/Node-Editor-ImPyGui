@@ -2,6 +2,8 @@ import dearpygui.dearpygui as dpg
 
 dpg.create_context()
 
+dict_for_json_export = {}
+
 # callback runs when user attempts to connect attributes
 def link_callback(sender, app_data):
     # app_data -> (link_id1, link_id2)
@@ -67,10 +69,14 @@ def delink_callback(sender, app_data):
     # app_data -> link_id
     dpg.delete_item(app_data)
 
-with dpg.window(label="Tutorial", width=1100, height=600):
+def json_export():
+    print(dict_for_json_export)
+
+
+with dpg.window(label="Node Editor", width=1300, height=600):
     with dpg.child_window(autosize_x=True, height=600):
         with dpg.group(horizontal=True, width=0):
-            with dpg.child_window(width=200, height=250):
+            with dpg.child_window(width=300, height=250):
                 dpg.add_text("Ctrl+Click to remove a link.", bullet=True)
                 dpg.add_button(label="Add Node", callback=add_node_callback)
                 dpg.add_button(label="Add Node Static Att", callback=add_node_static_link_callback)
@@ -90,25 +96,11 @@ with dpg.window(label="Tutorial", width=1100, height=600):
 
                         with dpg.node_attribute(label="Node A2", attribute_type=dpg.mvNode_Attr_Output):
                             dpg.add_input_float(label="F2", width=150)
-            with dpg.child_window(width=50, height=150):
-                dpg.add_button(label="Generate API Stub", width=25, height=25)
-                dpg.add_button(label="Export", width=25, height=25)
-    # with dpg.menu_bar():
-    #     with dpg.menu(label="File"):
-    #         dpg.add_menu_item(label="Save", callback=print_me)
-    #         dpg.add_menu_item(label="Save As", callback=add_node_callback)
+            with dpg.child_window(width=150, height=150):
+                dpg.add_button(label="Generate API Stub")
+                dpg.add_button(label="Export", callback=json_export)
 
-    #         with dpg.menu(label="Settings"):
-    #             dpg.add_menu_item(label="Setting 1", callback=print_me, check=True)
-    #             dpg.add_menu_item(label="Setting 2", callback=print_me)
-
-    #     dpg.add_menu_item(label="Help", callback=print_me)
-    
-    # with dpg.item_handler_registry(tag="widget handler") as handler:
-    #     dpg.add_item_clicked_handler(button=1, callback=del_node_callback)
-
-
-dpg.create_viewport(title='Custom Title', width=1200, height=700)
+dpg.create_viewport(title='FSM editor', width=1400, height=700)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.start_dearpygui()
