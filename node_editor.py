@@ -125,11 +125,24 @@ def delink_callback(sender, app_data):
     # app_data -> link_id
     dpg.delete_item(app_data)
 
-def json_export():
-    print(get_node_data("editor"))
-    with open("test_nested.json", "w") as outfile:
-        json.dump(dict_for_json_export, outfile, indent=4, sort_keys=False)
+def save_json_file(sender, app_data, user_data):
+    # Get the directory and file name from the file dialog
+    selected_file = app_data["file_path_name"]
+    
+    if selected_file:
+        get_node_data("editor")
+        # Export the node data to the selected file
+        with open(selected_file, "w") as outfile:
+            json.dump(dict_for_json_export, outfile, indent=4, sort_keys=False)
+        print(f"File saved to: {selected_file}")
 
+# Function to open the file dialog
+def json_export():
+    # Open a file dialog to select the save location
+    dpg.show_item("file_dialog_save")
+
+with dpg.file_dialog(directory_selector=False, show=False, callback=save_json_file, id="file_dialog_save", width=500, height=300):
+    dpg.add_file_extension(".json", color=(150, 255, 150, 255)) 
 
 with dpg.window(label="Node Editor", width=1300, height=600):
     with dpg.child_window(autosize_x=True, height=600):
