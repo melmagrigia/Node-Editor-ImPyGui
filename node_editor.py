@@ -15,6 +15,9 @@ def get_node_data(node_editor_id):
     for node_id in nodes:
         # Get node label
         node_label = dpg.get_item_label(node_id)
+
+        # Get node position
+        node_pos = dpg.get_item_pos(node_id)
         
         # Get all attributes associated with this node
         attributes = dpg.get_item_children(node_id, 1)  # 1 corresponds to children of type 'mvAppItemType::mvNodeAttribute'
@@ -48,7 +51,8 @@ def get_node_data(node_editor_id):
         # Store node label, attributes, and their values in the dictionary
         dict_for_json_export["nodes"][node_id] = {
             "label": node_label,
-            "attributes": attributes_data
+            "attributes": attributes_data,
+            "position": node_pos
         }
 
     return dict_for_json_export
@@ -86,7 +90,7 @@ def set_node_background_color(node_id, color):
 def add_node_callback(app_data):
     dpg.add_node(parent="editor")
 
-popup_values = ["add link", "add in pin"]
+popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add right pin"]
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
@@ -99,14 +103,19 @@ def add_node_node_callback(sender, app_data):
 def popup_callback(sender, app_data, user_data):
     t = user_data[0]
     s = user_data[1]
-    if s == "add link":
-        att_out_id = add_out_att_no_input(t)
+    if s == "Add Action Right":
+        att_out_id = add_out_att_text_input(t)
         add_node_link_callback(sender=sender, app_data=app_data, user_data=[att_out_id, t])
+    elif s == "Add Action Left":
+        att_out_id = add_in_att_text_input(t)
+        add_node_link_left_callback(sender=sender, app_data=app_data, user_data=[att_out_id, t])
+    elif s == "Add right pin":
+        add_out_att_no_input(t)
     else:
         add_in_att_no_input(t)
 
 def add_node_link_callback(sender, app_data, user_data):
-    l = dpg.add_node(parent="editor", label="stuff")
+    l = dpg.add_node(parent="editor", label="")
     node_pos = dpg.get_item_pos(user_data[1])
     dpg.set_item_pos(l, [node_pos[0] + 200, node_pos[1]])
     add_static_att(l)
@@ -114,7 +123,20 @@ def add_node_link_callback(sender, app_data, user_data):
     att_in_id = add_in_att_no_input(l)
     add_out_att_no_input(l)
     set_node_background_color(l, (255, 0, 0, 255))  # Red background
-    link_callback(sender="editor", app_data=[att_in_id, user_data[0]])
+    link_callback(sender="editor", app_data=[user_data[0], att_in_id])
+    return l
+
+def add_node_link_left_callback(sender, app_data, user_data):
+    l = dpg.add_node(parent="editor", label="")
+    node_pos = dpg.get_item_pos(user_data[1])
+    dpg.set_item_pos(l, [node_pos[0] - 200, node_pos[1]])
+    add_static_att(l)
+    add_static_att_float(l)
+    att_in_id = add_out_att_no_input(l)
+    add_in_att_no_input(l)
+    set_node_background_color(l, (255, 0, 0, 255))  # Red background
+    link_callback(sender="editor", app_data=[user_data[0], att_in_id])
+    return l
 
 def add_static_att(app_data):
     with dpg.node_attribute(parent=app_data, label="Node A2", attribute_type=dpg.mvNode_Attr_Static):
@@ -138,19 +160,30 @@ def add_in_att_no_input(app_data):
     return att_id
 
 def add_out_att_no_input(app_data):
-    with dpg.node_attribute(parent=app_data, label="one", attribute_type=dpg.mvNode_Attr_Output) as att_id:
+    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Output) as att_id:
         dpg.add_text("")
     return att_id
 
 def add_out_att_text_input(app_data):
-    with dpg.node_attribute(parent=app_data, label="one", attribute_type=dpg.mvNode_Attr_Output) as att_id:
-        dpg.add_input_text(width=150, callback=update_node_label)
+    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Output) as att_id:
+        dpg.add_input_text(width=150, user_data=[att_id], callback=update_node_label)
     return att_id
 
-def update_node_label(sender, app_data):
+def add_in_att_text_input(app_data):
+    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Input) as att_id:
+        dpg.add_input_text(width=150, user_data=[att_id], callback=update_node_label)
+    return att_id
+
+def update_node_label(sender, app_data, user_data):
     # Get the new text value
     new_text = dpg.get_value(sender)
-    # dpg.set_item_label(node_id, new_text)
+    get_node_data("editor")
+    for link in dict_for_json_export["links"]:
+        if dict_for_json_export["links"][link]["start_attr"] == user_data[0]:
+            for node in dict_for_json_export["nodes"]:
+                for att in dict_for_json_export["nodes"][node]["attributes"]:
+                    if att == dict_for_json_export["links"][link]["end_attr"]:
+                        dpg.set_item_label(node, new_text)
 
 def add_node_in_link_callback(sender, app_data, user_data):
     dpg.configure_item("node_editor_popup", show=False)
@@ -226,6 +259,22 @@ def json_export():
     # Open a file dialog to select the save location
     dpg.show_item("file_dialog_save")
 
+def open_file_dialog(sender, app_data, user_data):
+    file_path = app_data['file_path_name']
+    import_json(file_path)
+
+def import_json(file_path):
+    with open(file_path, "r") as infile:
+        data = json.load(infile)
+    
+
+def json_import():
+    dpg.show_item("file_dialog_load")
+
+with dpg.file_dialog(directory_selector=False, show=False, callback=open_file_dialog, tag="file_dialog_load", width=700, height=400):
+    dpg.add_file_extension(".json", color=(0, 255, 0, 255))
+    dpg.add_file_extension(".*")
+
 with dpg.file_dialog(directory_selector=False, show=False, callback=save_json_file, id="file_dialog_save", width=500, height=300):
     dpg.add_file_extension(".json", color=(150, 255, 150, 255)) 
 
@@ -233,9 +282,9 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
     with dpg.group(horizontal=True, width=0):
         with dpg.child_window(width=300, autosize_y=True):
             dpg.add_text("Ctrl+Click to remove a link.", bullet=True)
-            dpg.add_button(tag="node_in", label="Add Node In Att")
             dpg.add_button(label="Generate API Stub")
             dpg.add_button(label="Export", callback=json_export)
+            dpg.add_button(label="Import", callback=json_import)
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, callback=link_callback, delink_callback=delink_callback):
