@@ -26,6 +26,17 @@ def get_node_data(node_editor_id):
         for attr_id in attributes:
             # Get attribute label
             attr_label = dpg.get_item_label(attr_id)
+
+            # Get attribute type
+            item_info = dpg.get_item_configuration(attr_id)
+            #print(item_info)
+            if "attribute_type" in item_info:
+                if item_info["attribute_type"] == 1:
+                    attr_type = "mvNode_Attr_Output"
+                elif item_info["attribute_type"] == 2:
+                    attr_type = "mvNode_Attr_Static"
+                else:
+                    attr_type = "mvNode_Attr_Input"
             
             # Collect all children of the attribute (input fields)
             input_fields = dpg.get_item_children(attr_id, 1)  # 1 corresponds to children of type 'mvAppItemType'
@@ -35,16 +46,19 @@ def get_node_data(node_editor_id):
                 # Collect the input field's value and label
                 input_label = dpg.get_item_label(input_id)
                 input_value = dpg.get_value(input_id)
+                input_type = dpg.get_item_type(input_id)
                 
                 # Store input label and value
                 input_data[input_id] = {
                     "label": input_label,
-                    "value": input_value
+                    "value": input_value,
+                    "type": input_type
                 }
             
             # Store attribute label and its inputs
             attributes_data[attr_id] = {
                 "label": attr_label,
+                "type": attr_type,
                 "inputs": input_data
             }
 
@@ -87,15 +101,12 @@ def set_node_background_color(node_id, color):
     node_theme = create_node_background_theme(color)
     dpg.bind_item_theme(node_id, node_theme)
 
-def add_node_callback(app_data):
-    dpg.add_node(parent="editor")
-
 popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add right pin"]
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
     t = dpg.add_node(parent="editor", label=dpg.get_value("label_node"))
-    set_node_background_color(t, (0, 255, 0, 255))  # Green background
+    set_node_background_color(t, (183, 179, 39))  # Green background
     with dpg.popup(t):
         for i in popup_values:
             dpg.add_selectable(label=i, user_data=[t, i], callback=popup_callback)
@@ -122,7 +133,7 @@ def add_node_link_callback(sender, app_data, user_data):
     add_static_att_float(l)
     att_in_id = add_in_att_no_input(l)
     add_out_att_no_input(l)
-    set_node_background_color(l, (255, 0, 0, 255))  # Red background
+    set_node_background_color(l, (255, 51, 51))  # Red background
     link_callback(sender="editor", app_data=[user_data[0], att_in_id])
     return l
 
@@ -134,7 +145,7 @@ def add_node_link_left_callback(sender, app_data, user_data):
     add_static_att_float(l)
     att_in_id = add_out_att_no_input(l)
     add_in_att_no_input(l)
-    set_node_background_color(l, (255, 0, 0, 255))  # Red background
+    set_node_background_color(l, (255, 51, 51))  # Red background
     link_callback(sender="editor", app_data=[user_data[0], att_in_id])
     return l
 
@@ -160,7 +171,7 @@ def add_in_att_no_input(app_data):
     return att_id
 
 def add_out_att_no_input(app_data):
-    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Output) as att_id:
+    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Output, shape=dpg.mvNode_PinShape_Triangle) as att_id:
         dpg.add_text("")
     return att_id
 
@@ -189,34 +200,6 @@ def add_node_in_link_callback(sender, app_data, user_data):
     dpg.configure_item("node_editor_popup", show=False)
     t = dpg.add_node(parent="editor", label=dpg.get_value("label_node"))
     add_in_att(t)
-
-def add_node_out_link_callback(app_data):
-    t = dpg.add_node(parent="editor", label="stuff")
-    add_out_att(t)
-
-def add_node_in_out_links_callback(app_data):
-    t = dpg.add_node(parent="editor", label="stuff")
-    add_in_att(t)
-    add_out_att(t)
-
-def add_node_in_out_static_links_callback(app_data):
-    t = dpg.add_node(parent="editor", label="stuff")
-    add_in_att(t)
-    add_out_att(t)
-    add_static_att(t)
-
-def add_node_out_static_link_callback(app_data):
-    t = dpg.add_node(parent="editor", label="stuff")
-    add_out_att(t)
-    add_static_att(t)
-
-def add_node_in_static_link_callback(app_data):
-    t = dpg.add_node(parent="editor", label="stuff")
-    add_in_att(t)
-    add_static_att(t)
-
-def print_me(sender):
-    print(f"Menu Item: {sender}")
 
 def del_node_callback(sender, app_data):
     for id in dpg.get_selected_nodes("editor"):
@@ -263,10 +246,35 @@ def open_file_dialog(sender, app_data, user_data):
     file_path = app_data['file_path_name']
     import_json(file_path)
 
-def import_json(file_path):
-    with open(file_path, "r") as infile:
+def import_json(sender, app_data, user_data):
+    with open(user_data, "r") as infile:
         data = json.load(infile)
-    
+
+    # Create nodes
+    for node_id, node_data in data["nodes"].items():
+        with dpg.node(tag=node_id, label=node_data["label"], pos=node_data["position"], parent="editor"):
+            for attr_id, attr_data in node_data["attributes"].items():
+                if attr_data["type"] == "mvNode_Attr_Output":
+                    attribute_type=dpg.mvNode_Attr_Output
+                elif attr_data["type"] == "mvNode_Attr_Input":
+                    attribute_type=dpg.mvNode_Attr_Input
+                else:
+                    attribute_type=dpg.mvNode_Attr_Static           
+                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"]):
+                    # Create input fields with stored values
+                    for input_id, input_data in attr_data["inputs"].items():
+                        if input_data["type"] == "mvAppItemType::mvInputText":
+                            dpg.add_input_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                        elif input_data["type"] == "mvAppItemType::mvInputFloat":
+                            dpg.add_input_float(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                        elif input_data["type"] == "mvAppItemType::mvText":
+                            dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+
+    # Create links
+    for linkid, link in data["links"].items():
+        dpg.add_node_link(tag=linkid, attr_1=str(link["start_attr"]), attr_2=str(link["end_attr"]), parent="editor")
+
+    dict_for_json_export["links"] = data["links"]
 
 def json_import():
     dpg.show_item("file_dialog_load")
@@ -284,7 +292,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
             dpg.add_text("Ctrl+Click to remove a link.", bullet=True)
             dpg.add_button(label="Generate API Stub")
             dpg.add_button(label="Export", callback=json_export)
-            dpg.add_button(label="Import", callback=json_import)
+            dpg.add_button(label="Import", user_data="/home/pablo/Thesis/Mecella/imPyGUI/ss.json", callback=import_json)
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, callback=link_callback, delink_callback=delink_callback):
@@ -302,6 +310,18 @@ with dpg.window(modal=True, show=False, tag="node_editor_popup"):
         dpg.add_button(label="OK", width=75, callback=add_node_node_callback)
         dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("node_editor_popup", show=False))
 
+# Load a custom font that supports a wide range of Unicode characters
+with dpg.font_registry():
+    with dpg.font("/home/pablo/Thesis/Mecella/imPyGUI/arial-unicode-ms.ttf", 20) as default_font:
+        # Add font range to include basic Latin and mathematical symbols
+        dpg.add_font_range_hint(dpg.mvFontRangeHint_Default)
+        dpg.add_font_range(0x2200, 0x22FF)  # Range for mathematical symbols
+
+dpg.bind_font(default_font)
+
+# For debug need to deactivate the thread management
+dpg.configure_app(manual_callback_management=True)
+
 dpg.create_viewport(title='FSM editor', width=1400, height=700)
 dpg.setup_dearpygui()
 resize_to_viewport(None, None)
@@ -309,5 +329,10 @@ resize_to_viewport(None, None)
 # Set up the viewport and window
 dpg.set_viewport_resize_callback(resize_to_viewport)
 dpg.show_viewport()
-dpg.start_dearpygui()
+# For debug pourpose
+while dpg.is_dearpygui_running():
+    jobs = dpg.get_callback_queue() # retrieves and clears queue
+    dpg.run_callbacks(jobs)
+    dpg.render_dearpygui_frame()
+# dpg.start_dearpygui()
 dpg.destroy_context()

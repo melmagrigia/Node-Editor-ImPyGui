@@ -11,3 +11,7 @@ A Node editor Python App developed with [DearPyGui](https://github.com/hoffstadt
 4. then start the application
 
 `python ./node_editor.py`
+
+## Editor usage
+To add a new node press the central botton of the mouse
+To add a node to

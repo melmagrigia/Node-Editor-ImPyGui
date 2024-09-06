@@ -1,4 +1,5 @@
 imPyGuiEnv/
+.vscode/
 stuff.py
 dpg.ini
 d.py
