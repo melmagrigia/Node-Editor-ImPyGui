@@ -150,20 +150,20 @@ def add_node_link_left_callback(sender, app_data, user_data):
     return l
 
 def add_static_att(app_data):
-    with dpg.node_attribute(parent=app_data, label="Node A2", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=app_data, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_input_text(label="p", width=150)
 
 def add_static_att_float(app_data):
-    with dpg.node_attribute(parent=app_data, label="Node A2", attribute_type=dpg.mvNode_Attr_Static):
-        dpg.add_input_float(label="Kw", width=150)
+    with dpg.node_attribute(parent=app_data, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
+        dpg.add_input_float(label="Cost", width=150)
 
 def add_in_att(app_data):
-    with dpg.node_attribute(parent=app_data, label="Node A2"):
-        dpg.add_input_text(label="", width=150)
+    with dpg.node_attribute(parent=app_data):
+        dpg.add_input_text(width=150)
 
 def add_out_att(app_data):
-    with dpg.node_attribute(parent=app_data, label="Node A2", attribute_type=dpg.mvNode_Attr_Output):
-        dpg.add_input_text(label="F2", width=150)
+    with dpg.node_attribute(parent=app_data, attribute_type=dpg.mvNode_Attr_Output):
+        dpg.add_input_text(width=150)
 
 def add_in_att_no_input(app_data):
     with dpg.node_attribute(parent=app_data) as att_id:
