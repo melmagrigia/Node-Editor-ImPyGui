@@ -19,6 +19,9 @@ def get_node_data(node_editor_id):
         # Get node position
         node_pos = dpg.get_item_pos(node_id)
         
+        # Get node type
+        node_type = dpg.get_item_configuration(node_id)["user_data"]
+
         # Get all attributes associated with this node
         attributes = dpg.get_item_children(node_id, 1)  # 1 corresponds to children of type 'mvAppItemType::mvNodeAttribute'
         
@@ -59,7 +62,8 @@ def get_node_data(node_editor_id):
             attributes_data[attr_id] = {
                 "label": attr_label,
                 "type": attr_type,
-                "inputs": input_data
+                "inputs": input_data,
+                "type": node_type
             }
 
         # Store node label, attributes, and their values in the dictionary
@@ -105,7 +109,7 @@ popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add righ
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
-    t = dpg.add_node(parent="editor", label=dpg.get_value("label_node"))
+    t = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state")
     set_node_background_color(t, (183, 179, 39))  # Green background
     with dpg.popup(t):
         for i in popup_values:
@@ -252,7 +256,14 @@ def import_json(sender, app_data, user_data):
 
     # Create nodes
     for node_id, node_data in data["nodes"].items():
-        with dpg.node(tag=node_id, label=node_data["label"], pos=node_data["position"], parent="editor"):
+        with dpg.node(tag=node_id, label=node_data["label"], pos=node_data["position"], parent="editor", user_data=node_data["type"]):
+            if node_data["type"] == "node_state":
+                set_node_background_color(node_id, (183, 179, 39))  # Green background
+                with dpg.popup(node_id):
+                    for i in popup_values:
+                        dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
+            else:
+                set_node_background_color(node_id, (255, 51, 51))  # Red background
             for attr_id, attr_data in node_data["attributes"].items():
                 if attr_data["type"] == "mvNode_Attr_Output":
                     attribute_type=dpg.mvNode_Attr_Output
@@ -264,9 +275,9 @@ def import_json(sender, app_data, user_data):
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
                         if input_data["type"] == "mvAppItemType::mvInputText":
-                            dpg.add_input_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                            dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
                         elif input_data["type"] == "mvAppItemType::mvInputFloat":
-                            dpg.add_input_float(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                            dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
                         elif input_data["type"] == "mvAppItemType::mvText":
                             dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
 
@@ -292,7 +303,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
             dpg.add_text("Ctrl+Click to remove a link.", bullet=True)
             dpg.add_button(label="Generate API Stub")
             dpg.add_button(label="Export", callback=json_export)
-            dpg.add_button(label="Import", user_data="/home/pablo/Thesis/Mecella/imPyGUI/ss.json", callback=import_json)
+            dpg.add_button(label="Import", user_data="/home/pablo/Thesis/Mecella/imPyGUI/sdf.json", callback=import_json)
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, callback=link_callback, delink_callback=delink_callback):
