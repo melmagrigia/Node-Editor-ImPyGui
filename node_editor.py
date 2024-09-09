@@ -116,68 +116,62 @@ def add_node_node_callback(sender, app_data):
             dpg.add_selectable(label=i, user_data=[t, i], callback=popup_callback)
 
 def popup_callback(sender, app_data, user_data):
-    t = user_data[0]
-    s = user_data[1]
-    if s == "Add Action Right":
-        att_out_id = add_out_att_text_input(t)
-        add_node_link_callback(sender=sender, app_data=app_data, user_data=[att_out_id, t])
-    elif s == "Add Action Left":
-        att_out_id = add_in_att_text_input(t)
-        add_node_link_left_callback(sender=sender, app_data=app_data, user_data=[att_out_id, t])
-    elif s == "Add right pin":
-        add_out_att_no_input(t)
+    node_id = user_data[0]
+    command = user_data[1]
+    if command == "Add Action Right":
+        att_out_id = add_out_att_text_input(node_id)
+        add_node_link_callback(sender=sender, app_data=app_data, user_data=[att_out_id, node_id, "right"])
+    elif command == "Add Action Left":
+        att_out_id = add_in_att_text_input(node_id)
+        add_node_link_callback(sender=sender, app_data=app_data, user_data=[att_out_id, node_id, "left"])
+    elif command == "Add right pin":
+        add_out_att_no_input(sender=node_id, app_data=app_data, user_data="node state in")
     else:
-        add_in_att_no_input(t)
+        add_in_att_no_input(sender=node_id, app_data=app_data, user_data="node state in")
 
 def add_node_link_callback(sender, app_data, user_data):
-    l = dpg.add_node(parent="editor", user_data="node_transition")
+    node_id = dpg.add_node(parent="editor", user_data="node_transition")
     node_pos = dpg.get_item_pos(user_data[1])
-    dpg.set_item_pos(l, [node_pos[0] + 200, node_pos[1]])
-    add_static_att(l)
-    add_static_att_float(l)
-    att_in_id = add_in_att_no_input(l)
-    add_out_att_no_input(l)
-    set_node_background_color(l, (255, 51, 51))  # Red background
+    if user_data[2] == "right":
+        pos_offset = node_pos[0] + 200
+        att_in_id = add_in_att_no_input(sender=node_id, app_data=app_data, user_data="")
+        add_out_att_no_input(sender=node_id, app_data=app_data, user_data="node transition out")
+    else:
+        pos_offset = node_pos[0] - 300
+        att_in_id = add_out_att_no_input(sender=node_id, app_data=app_data, user_data="")
+        add_in_att_no_input(sender=node_id, app_data=app_data, user_data="node transition out")
+    dpg.set_item_pos(node_id, [pos_offset, node_pos[1]])
+    add_static_att(sender=node_id, app_data=app_data)
+    add_static_att_float(sender=node_id, app_data=app_data)
+    set_node_background_color(node_id, (255, 51, 51))  # Red background
     link_callback(sender="editor", app_data=[user_data[0], att_in_id])
-    return l
+    return node_id
 
-def add_node_link_left_callback(sender, app_data, user_data):
-    l = dpg.add_node(parent="editor", user_data="node_transition")
-    node_pos = dpg.get_item_pos(user_data[1])
-    dpg.set_item_pos(l, [node_pos[0] - 200, node_pos[1]])
-    add_static_att(l)
-    add_static_att_float(l)
-    att_in_id = add_out_att_no_input(l)
-    add_in_att_no_input(l)
-    set_node_background_color(l, (255, 51, 51))  # Red background
-    link_callback(sender="editor", app_data=[user_data[0], att_in_id])
-    return l
-
-def add_static_att(app_data):
-    with dpg.node_attribute(parent=app_data, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
+def add_static_att(sender, app_data):
+    with dpg.node_attribute(parent=sender, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_input_text(label="p", width=150)
 
-def add_static_att_float(app_data):
-    with dpg.node_attribute(parent=app_data, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
+def add_static_att_float(sender, app_data):
+    with dpg.node_attribute(parent=sender, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_input_float(label="Cost", width=150)
 
-def add_in_att_no_input(app_data):
-    with dpg.node_attribute(parent=app_data) as att_id:
+def add_in_att_no_input(sender, app_data, user_data):
+    with dpg.node_attribute(parent=sender, label=user_data, shape=dpg.mvNode_PinShape_Triangle) as att_id:
         dpg.add_text("")
     return att_id
 
-def add_out_att_no_input(app_data):
-    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Output, shape=dpg.mvNode_PinShape_Triangle) as att_id:
+def add_out_att_no_input(sender, app_data, user_data):
+    with dpg.node_attribute(parent=sender, label=user_data, attribute_type=dpg.mvNode_Attr_Output, shape=dpg.mvNode_PinShape_Triangle) as att_id:
         dpg.add_text("")
     return att_id
 
-def add_out_att_text_input(app_data):
-    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Output) as att_id:
+def add_out_att_text_input(sender):
+    with dpg.node_attribute(parent=sender, attribute_type=dpg.mvNode_Attr_Output) as att_id:
         dpg.add_input_text(width=150, user_data=[att_id], callback=update_node_label)
     return att_id
 
-def add_in_att_text_input(app_data):
-    with dpg.node_attribute(parent=app_data, label="", attribute_type=dpg.mvNode_Attr_Input) as att_id:
+def add_in_att_text_input(sender):
+    with dpg.node_attribute(parent=sender, attribute_type=dpg.mvNode_Attr_Input) as att_id:
         dpg.add_input_text(width=150, user_data=[att_id], callback=update_node_label)
     return att_id
 
@@ -272,7 +266,7 @@ def import_json(sender, app_data, user_data):
                             dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
 
     # Create links
-    for linkid, link in data["links"].items():
+    for link in data["links"].values():
         attr_1 = dpg.get_alias_id(str(link["start_attr"]))
         attr_2 = dpg.get_alias_id(str(link["end_attr"]))
         link_callback(sender="editor", app_data=[attr_1, attr_2])
