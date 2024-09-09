@@ -62,15 +62,15 @@ def get_node_data(node_editor_id):
             attributes_data[attr_id] = {
                 "label": attr_label,
                 "type": attr_type,
-                "inputs": input_data,
-                "type": node_type
+                "inputs": input_data
             }
 
         # Store node label, attributes, and their values in the dictionary
         dict_for_json_export["nodes"][node_id] = {
             "label": node_label,
             "attributes": attributes_data,
-            "position": node_pos
+            "position": node_pos,
+            "type": node_type
         }
 
     return dict_for_json_export
@@ -130,7 +130,7 @@ def popup_callback(sender, app_data, user_data):
         add_in_att_no_input(t)
 
 def add_node_link_callback(sender, app_data, user_data):
-    l = dpg.add_node(parent="editor", label="")
+    l = dpg.add_node(parent="editor", user_data="node_transition")
     node_pos = dpg.get_item_pos(user_data[1])
     dpg.set_item_pos(l, [node_pos[0] + 200, node_pos[1]])
     add_static_att(l)
@@ -142,7 +142,7 @@ def add_node_link_callback(sender, app_data, user_data):
     return l
 
 def add_node_link_left_callback(sender, app_data, user_data):
-    l = dpg.add_node(parent="editor", label="")
+    l = dpg.add_node(parent="editor", user_data="node_transition")
     node_pos = dpg.get_item_pos(user_data[1])
     dpg.set_item_pos(l, [node_pos[0] - 200, node_pos[1]])
     add_static_att(l)
@@ -160,14 +160,6 @@ def add_static_att(app_data):
 def add_static_att_float(app_data):
     with dpg.node_attribute(parent=app_data, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_input_float(label="Cost", width=150)
-
-def add_in_att(app_data):
-    with dpg.node_attribute(parent=app_data):
-        dpg.add_input_text(width=150)
-
-def add_out_att(app_data):
-    with dpg.node_attribute(parent=app_data, attribute_type=dpg.mvNode_Attr_Output):
-        dpg.add_input_text(width=150)
 
 def add_in_att_no_input(app_data):
     with dpg.node_attribute(parent=app_data) as att_id:
@@ -199,11 +191,6 @@ def update_node_label(sender, app_data, user_data):
                 for att in dict_for_json_export["nodes"][node]["attributes"]:
                     if att == dict_for_json_export["links"][link]["end_attr"]:
                         dpg.set_item_label(node, new_text)
-
-def add_node_in_link_callback(sender, app_data, user_data):
-    dpg.configure_item("node_editor_popup", show=False)
-    t = dpg.add_node(parent="editor", label=dpg.get_value("label_node"))
-    add_in_att(t)
 
 def del_node_callback(sender, app_data):
     for id in dpg.get_selected_nodes("editor"):
@@ -271,11 +258,14 @@ def import_json(sender, app_data, user_data):
                     attribute_type=dpg.mvNode_Attr_Input
                 else:
                     attribute_type=dpg.mvNode_Attr_Static           
-                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"]):
+                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"]) as att_id:
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
-                        if input_data["type"] == "mvAppItemType::mvInputText":
+                        if input_data["type"] == "mvAppItemType::mvInputText" and attribute_type == dpg.mvNode_Attr_Static:
                             dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                        elif input_data["type"] == "mvAppItemType::mvInputText":
+                            dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], 
+                                               user_data=[dpg.get_alias_id(att_id)], callback=update_node_label)
                         elif input_data["type"] == "mvAppItemType::mvInputFloat":
                             dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
                         elif input_data["type"] == "mvAppItemType::mvText":
@@ -283,9 +273,9 @@ def import_json(sender, app_data, user_data):
 
     # Create links
     for linkid, link in data["links"].items():
-        dpg.add_node_link(tag=linkid, attr_1=str(link["start_attr"]), attr_2=str(link["end_attr"]), parent="editor")
-
-    dict_for_json_export["links"] = data["links"]
+        attr_1 = dpg.get_alias_id(str(link["start_attr"]))
+        attr_2 = dpg.get_alias_id(str(link["end_attr"]))
+        link_callback(sender="editor", app_data=[attr_1, attr_2])
 
 def json_import():
     dpg.show_item("file_dialog_load")
@@ -306,7 +296,8 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
             dpg.add_button(label="Import", user_data="/home/pablo/Thesis/Mecella/imPyGUI/sdf.json", callback=import_json)
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
-            with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, callback=link_callback, delink_callback=delink_callback):
+            with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, 
+                                 callback=link_callback, delink_callback=delink_callback):
                 pass
 
 with dpg.handler_registry():
