@@ -79,11 +79,13 @@ def get_node_data(node_editor_id):
 # callback runs when user attempts to connect attributes
 def link_callback(sender, app_data):
     # app_data -> (link_id1, link_id2)
-    l = dpg.add_node_link(app_data[0], app_data[1], parent=sender, label="label")
-    dict_for_json_export["links"][l] = {
-        "start_attr": app_data[0], 
-        "end_attr": app_data[1]
-        }
+    get_node_data("editor")
+    if dict_for_json_export["nodes"][dpg.get_item_parent(app_data[0])]["type"] == "node_transition" or dict_for_json_export["nodes"][dpg.get_item_parent(app_data[1])]["type"] == "node_transition":  
+        l = dpg.add_node_link(app_data[0], app_data[1], parent=sender, label="label")
+        dict_for_json_export["links"][l] = {
+            "start_attr": app_data[0], 
+            "end_attr": app_data[1]
+            }
 
 def resize_to_viewport(sender, app_data):
     # Get the viewport's width and height
@@ -356,6 +358,5 @@ while dpg.is_dearpygui_running():
 dpg.destroy_context()
 
 
-# TODO delete constrain on node transitions -> if you delete a node transition delete the attribute with the node label on the node state, 
+# TODO delete constrain on node transitions -> 
 # if you delete the link between node state and corresponding node transition delete the node transition and the attribute connected
-# No links between node state 
