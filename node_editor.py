@@ -109,11 +109,11 @@ popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add righ
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
-    t = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state")
-    set_node_background_color(t, (183, 179, 39))  # Green background
-    with dpg.popup(t):
+    node_id = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state", pos=dpg.get_item_pos("node_editor_popup"))
+    set_node_background_color(node_id, (183, 179, 39))  # Green background
+    with dpg.popup(node_id):
         for i in popup_values:
-            dpg.add_selectable(label=i, user_data=[t, i], callback=popup_callback)
+            dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
 
 def popup_callback(sender, app_data, user_data):
     node_id = user_data[0]
@@ -211,16 +211,12 @@ def save_json_file(sender, app_data, user_data):
 popup_values_editor = ["Add Node"]
 
 def show_popup(sender, app_data):
-    mouse_pos = dpg.get_mouse_pos(local=False)
-    node_editor_pos = dpg.get_item_rect_min("editor")
-    node_editor_size = dpg.get_item_rect_size("editor")
-    
-    # Check if the mouse is within the node editor bounds
-    if (node_editor_pos[0] <= mouse_pos[0] <= node_editor_pos[0] + node_editor_size[0]) and \
-       (node_editor_pos[1] <= mouse_pos[1] <= node_editor_pos[1] + node_editor_size[1]):
-        print("in")
-
-    dpg.show_item("node_editor_popup")
+    if dpg.is_item_hovered("editor"):
+        dpg.focus_item("node_editor_popup")
+        dpg.show_item("node_editor_popup")
+        dpg.set_item_pos("node_editor_popup", dpg.get_mouse_pos(local=False))
+    else:
+        pass
 
 # Function to open the file dialog
 def json_export():
