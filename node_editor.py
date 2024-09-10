@@ -9,6 +9,7 @@ dict_for_json_export = {
 }
 
 def get_node_data(node_editor_id):
+    dict_for_json_export["nodes"] = {}
     # Get all nodes in the node editor
     nodes = dpg.get_item_children(node_editor_id, 1)  # 1 corresponds to children of type 'mvAppItemType::mvNode'
     
@@ -109,7 +110,9 @@ popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add righ
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
-    node_id = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state", pos=dpg.get_item_pos("node_editor_popup"))
+    wind_pos = dpg.get_item_pos("node_editor_popup")
+    pos_offset = wind_pos[0] - 300
+    node_id = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state", pos=[pos_offset, wind_pos[1]])
     set_node_background_color(node_id, (183, 179, 39))  # Green background
     with dpg.popup(node_id):
         for i in popup_values:
@@ -186,9 +189,32 @@ def update_node_label(sender, app_data, user_data):
                     if att == dict_for_json_export["links"][link]["end_attr"]:
                         dpg.set_item_label(node, new_text)
 
+# Function to get all links associated with a node (both input and output)
+def get_links_for_node(node_id):
+    node_attrs = dpg.get_item_children(node_id, 1)
+    associated_links = []
+    
+    # Loop through the link dictionary to find any links involving the node's attributes
+    for link_id, link_data in dict_for_json_export["links"].items():
+        if link_data["start_attr"] in node_attrs or link_data["end_attr"] in node_attrs:
+            associated_links.append((link_id, link_data))
+    
+    return associated_links
+
 def del_node_callback(sender, app_data):
-    for id in dpg.get_selected_nodes("editor"):
-        dpg.delete_item(id)
+    get_node_data("editor")
+    for node_id in dpg.get_selected_nodes("editor"):
+        # Get all links associated with this node
+        associated_links = get_links_for_node(node_id)
+        for link_id, link_data in associated_links:
+            del dict_for_json_export["links"][link_id]
+        if dict_for_json_export["nodes"][node_id]["type"] == "node_transition":
+            node_attrs = dpg.get_item_children(node_id, 1)
+            for link_id, link_data in associated_links:
+                for att in node_attrs:
+                    if link_data["end_attr"] == att:
+                        dpg.delete_item(link_data["start_attr"])
+        dpg.delete_item(node_id)
 
 # callback runs when user attempts to disconnect attributes
 def delink_callback(sender, app_data):
@@ -228,8 +254,8 @@ def open_file_dialog(sender, app_data, user_data):
     import_json(file_path)
 
 def import_json(sender, app_data, user_data):
-    with open(user_data, "r") as infile:
-        data = json.load(infile)
+    with open(user_data, "r") as in_file:
+        data = json.load(in_file)
 
     # Create nodes
     for node_id, node_data in data["nodes"].items():
@@ -321,10 +347,15 @@ resize_to_viewport(None, None)
 # Set up the viewport and window
 dpg.set_viewport_resize_callback(resize_to_viewport)
 dpg.show_viewport()
-# For debug pourpose
+# For debug purpose
 while dpg.is_dearpygui_running():
     jobs = dpg.get_callback_queue() # retrieves and clears queue
     dpg.run_callbacks(jobs)
     dpg.render_dearpygui_frame()
 # dpg.start_dearpygui()
 dpg.destroy_context()
+
+
+# TODO delete constrain on node transitions -> if you delete a node transition delete the attribute with the node label on the node state, 
+# if you delete the link between node state and corresponding node transition delete the node transition and the attribute connected
+# No links between node state 
