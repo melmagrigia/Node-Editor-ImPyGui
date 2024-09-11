@@ -1,0 +1,560 @@
+{
+    "nodes": {
+        "49": {
+            "label": "s0",
+            "attributes": {
+                "104": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "105": {
+                            "label": "",
+                            "value": "PrepareToStart",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "206": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "207": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "208": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "209": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                25,
+                357
+            ],
+            "type": "node_state"
+        },
+        "60": {
+            "label": "s1",
+            "attributes": {
+                "119": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "120": {
+                            "label": "",
+                            "value": "Tstart",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "194": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "195": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                657,
+                365
+            ],
+            "type": "node_state"
+        },
+        "71": {
+            "label": "s2",
+            "attributes": {
+                "134": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "135": {
+                            "label": "",
+                            "value": "Break",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "149": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "150": {
+                            "label": "",
+                            "value": "Tend",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "200": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "201": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                1399,
+                389
+            ],
+            "type": "node_state"
+        },
+        "82": {
+            "label": "s4",
+            "attributes": {
+                "164": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "165": {
+                            "label": "",
+                            "value": "Repair",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "203": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "204": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                642,
+                121
+            ],
+            "type": "node_state"
+        },
+        "93": {
+            "label": "s3",
+            "attributes": {
+                "179": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "180": {
+                            "label": "",
+                            "value": "Reconfig",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "197": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "198": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                629,
+                682
+            ],
+            "type": "node_state"
+        },
+        "106": {
+            "label": "PrepareToStart",
+            "attributes": {
+                "107": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "108": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "109": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "110": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "111": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "112": {
+                            "label": "p",
+                            "value": "1",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "113": {
+                    "label": "Cost",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "114": {
+                            "label": "Cost",
+                            "value": 0.05700000002980232,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                }
+            },
+            "position": [
+                346,
+                328
+            ],
+            "type": "node_transition"
+        },
+        "121": {
+            "label": "Tstart",
+            "attributes": {
+                "122": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "123": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "124": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "125": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "126": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "127": {
+                            "label": "p",
+                            "value": "1",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "128": {
+                    "label": "Cost",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "129": {
+                            "label": "Cost",
+                            "value": 0.15800000727176666,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                }
+            },
+            "position": [
+                932,
+                364
+            ],
+            "type": "node_transition"
+        },
+        "136": {
+            "label": "Break",
+            "attributes": {
+                "137": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "138": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "139": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "140": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "141": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "142": {
+                            "label": "p",
+                            "value": "(1-P_ok)",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "143": {
+                    "label": "Cost",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "144": {
+                            "label": "Cost",
+                            "value": 0.23499999940395355,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                }
+            },
+            "position": [
+                949,
+                100
+            ],
+            "type": "node_transition"
+        },
+        "151": {
+            "label": "Tend",
+            "attributes": {
+                "152": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "153": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "154": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "155": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "156": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "157": {
+                            "label": "p",
+                            "value": "P_ok",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "158": {
+                    "label": "Cost",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "159": {
+                            "label": "Cost",
+                            "value": 0.12700000405311584,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                }
+            },
+            "position": [
+                926,
+                685
+            ],
+            "type": "node_transition"
+        },
+        "166": {
+            "label": "Repair",
+            "attributes": {
+                "167": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "168": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "169": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "170": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "171": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "172": {
+                            "label": "p",
+                            "value": "1",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "173": {
+                    "label": "Cost",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "174": {
+                            "label": "Cost",
+                            "value": 0.09799999743700027,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                }
+            },
+            "position": [
+                266,
+                76
+            ],
+            "type": "node_transition"
+        },
+        "181": {
+            "label": "Reconfig",
+            "attributes": {
+                "182": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "183": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "184": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "185": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "186": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "187": {
+                            "label": "p",
+                            "value": "1",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "188": {
+                    "label": "Cost",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "189": {
+                            "label": "Cost",
+                            "value": 0.05700000002980232,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                }
+            },
+            "position": [
+                300,
+                668
+            ],
+            "type": "node_transition"
+        }
+    },
+    "links": {
+        "118": {
+            "start_attr": 104,
+            "end_attr": 107
+        },
+        "133": {
+            "start_attr": 119,
+            "end_attr": 122
+        },
+        "148": {
+            "start_attr": 134,
+            "end_attr": 137
+        },
+        "163": {
+            "start_attr": 149,
+            "end_attr": 152
+        },
+        "178": {
+            "start_attr": 164,
+            "end_attr": 167
+        },
+        "193": {
+            "start_attr": 179,
+            "end_attr": 182
+        },
+        "196": {
+            "start_attr": 109,
+            "end_attr": 194
+        },
+        "199": {
+            "start_attr": 197,
+            "end_attr": 154
+        },
+        "202": {
+            "start_attr": 124,
+            "end_attr": 200
+        },
+        "205": {
+            "start_attr": 203,
+            "end_attr": 139
+        },
+        "210": {
+            "start_attr": 206,
+            "end_attr": 169
+        },
+        "211": {
+            "start_attr": 208,
+            "end_attr": 184
+        }
+    }
+}

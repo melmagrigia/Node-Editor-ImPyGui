@@ -253,7 +253,7 @@ def json_export():
 
 def open_file_dialog(sender, app_data, user_data):
     file_path = app_data['file_path_name']
-    import_json(file_path)
+    import_json(sender, app_data, file_path)
 
 def import_json(sender, app_data, user_data):
     with open(user_data, "r") as in_file:
@@ -311,7 +311,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
             dpg.add_text("Ctrl+Click to remove a link.", bullet=True)
             dpg.add_button(label="Generate API Stub")
             dpg.add_button(label="Export", callback=json_export)
-            dpg.add_button(label="Import", user_data="/home/pablo/Thesis/Mecella/imPyGUI/sdf.json", callback=import_json)
+            dpg.add_button(label="Import", callback=json_import)
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, 
