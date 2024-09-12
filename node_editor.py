@@ -113,7 +113,7 @@ popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add righ
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
     wind_pos = dpg.get_item_pos("node_editor_popup")
-    pos_offset = wind_pos[0] - 300
+    pos_offset = wind_pos[0] - 400
     node_id = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state", pos=[pos_offset, wind_pos[1]])
     set_node_background_color(node_id, (183, 179, 39))  # Green background
     with dpg.popup(node_id):
@@ -240,6 +240,9 @@ popup_values_editor = ["Add Node"]
 
 def show_popup(sender, app_data):
     if dpg.is_item_hovered("editor"):
+        for node in dpg.get_item_children("editor", 1):
+            if dpg.is_item_hovered(node):
+                return
         dpg.focus_item("node_editor_popup")
         dpg.show_item("node_editor_popup")
         dpg.set_item_pos("node_editor_popup", dpg.get_mouse_pos(local=False))
@@ -307,11 +310,13 @@ with dpg.file_dialog(directory_selector=False, show=False, callback=save_json_fi
 
 with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True, no_move=True, no_resize=True, no_scrollbar=True):
     with dpg.group(horizontal=True, width=0):
-        with dpg.child_window(width=300, autosize_y=True):
-            dpg.add_text("Ctrl+Click to remove a link.", bullet=True)
-            dpg.add_button(label="Generate API Stub")
+        with dpg.child_window(width=400, autosize_y=True):
+            dpg.add_text("Right Click to Add a State Node", bullet=True)
+            dpg.add_text("Right Click on a State Node to Open Actions Dialog", bullet=True)
+            dpg.add_text("Ctrl+Click to remove a link", bullet=True)
             dpg.add_button(label="Export", callback=json_export)
             dpg.add_button(label="Import", callback=json_import)
+            dpg.add_button(label="Generate API Stub")
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, 
@@ -319,7 +324,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
                 pass
 
 with dpg.handler_registry():
-    dpg.add_mouse_click_handler(callback=show_popup, button=dpg.mvMouseButton_Middle)
+    dpg.add_mouse_click_handler(callback=show_popup, button=dpg.mvMouseButton_Right)
 
 # Create the popup (initially hidden)
 with dpg.window(modal=True, show=False, tag="node_editor_popup"):
