@@ -108,7 +108,9 @@ def set_node_background_color(node_id, color):
     node_theme = create_node_background_theme(color)
     dpg.bind_item_theme(node_id, node_theme)
 
-popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add right pin", "Mark as Init state"]
+popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add right pin", "Mark as Init state", "Change node label"]
+
+popup_node_transition = ["Change node label"]
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
@@ -133,6 +135,8 @@ def popup_callback(sender, app_data, user_data):
         add_out_att_no_input(sender=node_id, app_data=app_data, user_data="node state in")
     elif command == "Add left pin":
         add_in_att_no_input(sender=node_id, app_data=app_data, user_data="node state in")
+    elif command == "Change node label":
+        dpg.configure_item("node_change_label_popup", show=True, user_data=node_id)
     elif command == "Mark as Init state":
         set_node_background_color(node_id, (0, 146, 204))
 
@@ -152,6 +156,9 @@ def add_node_link_callback(sender, app_data, user_data):
     add_static_att_float(sender=node_id, app_data=app_data)
     set_node_background_color(node_id, (255, 51, 51))  # Red background
     link_callback(sender="editor", app_data=[user_data[0], att_in_id])
+    with dpg.popup(node_id):
+        for i in popup_node_transition:
+            dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
     return node_id
 
 def add_static_att(sender, app_data):
@@ -333,6 +340,17 @@ with dpg.window(modal=True, show=False, tag="node_editor_popup"):
     with dpg.group(horizontal=True):
         dpg.add_button(label="OK", width=75, callback=add_node_node_callback)
         dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("node_editor_popup", show=False))
+
+# Create the popup (initially hidden)
+with dpg.window(modal=True, show=False, tag="node_change_label_popup", user_data=""):
+    dpg.add_text("Change node label")
+    dpg.add_separator()
+    dpg.add_input_text(tag="change_label_input")
+    with dpg.group(horizontal=True):
+        dpg.add_button(label="OK", width=75, callback=lambda: (dpg.set_item_label(dpg.get_item_user_data("node_change_label_popup"), 
+                                                                                 dpg.get_value("change_label_input")), 
+                                                                                 dpg.configure_item("node_change_label_popup", show=False)))
+        dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("node_change_label_popup", show=False))
 
 # Load a custom font that supports a wide range of Unicode characters
 with dpg.font_registry():
