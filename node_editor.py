@@ -108,7 +108,7 @@ def set_node_background_color(node_id, color):
     node_theme = create_node_background_theme(color)
     dpg.bind_item_theme(node_id, node_theme)
 
-popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add right pin"]
+popup_values = ["Add Action Right", "Add Action Left", "Add left pin", "Add right pin", "Mark as Init state"]
 
 def add_node_node_callback(sender, app_data):
     dpg.configure_item("node_editor_popup", show=False)
@@ -131,8 +131,10 @@ def popup_callback(sender, app_data, user_data):
         add_node_link_callback(sender=sender, app_data=app_data, user_data=[att_out_id, node_id, "left"])
     elif command == "Add right pin":
         add_out_att_no_input(sender=node_id, app_data=app_data, user_data="node state in")
-    else:
+    elif command == "Add left pin":
         add_in_att_no_input(sender=node_id, app_data=app_data, user_data="node state in")
+    elif command == "Mark as Init state":
+        set_node_background_color(node_id, (0, 146, 204))
 
 def add_node_link_callback(sender, app_data, user_data):
     node_id = dpg.add_node(parent="editor", user_data="node_transition")
@@ -161,35 +163,30 @@ def add_static_att_float(sender, app_data):
         dpg.add_input_float(label="Cost", width=150)
 
 def add_in_att_no_input(sender, app_data, user_data):
-    with dpg.node_attribute(parent=sender, label=user_data, shape=dpg.mvNode_PinShape_Triangle) as att_id:
+    shape = dpg.mvNode_PinShape_CircleFilled
+    if user_data == "node state in":
+        shape = dpg.mvNode_PinShape_Triangle
+    with dpg.node_attribute(parent=sender, label=user_data, shape=shape) as att_id:
         dpg.add_text("")
     return att_id
 
 def add_out_att_no_input(sender, app_data, user_data):
-    with dpg.node_attribute(parent=sender, label=user_data, attribute_type=dpg.mvNode_Attr_Output, shape=dpg.mvNode_PinShape_Triangle) as att_id:
+    shape = dpg.mvNode_PinShape_CircleFilled
+    if user_data == "node state in":
+        shape = dpg.mvNode_PinShape_Triangle
+    with dpg.node_attribute(parent=sender, label=user_data, attribute_type=dpg.mvNode_Attr_Output, shape=shape) as att_id:
         dpg.add_text("")
     return att_id
 
 def add_out_att_text_input(sender):
     with dpg.node_attribute(parent=sender, attribute_type=dpg.mvNode_Attr_Output) as att_id:
-        dpg.add_input_text(width=150, user_data=[att_id], callback=update_node_label)
+        pass
     return att_id
 
 def add_in_att_text_input(sender):
     with dpg.node_attribute(parent=sender, attribute_type=dpg.mvNode_Attr_Input) as att_id:
-        dpg.add_input_text(width=150, user_data=[att_id], callback=update_node_label)
+        pass
     return att_id
-
-def update_node_label(sender, app_data, user_data):
-    # Get the new text value
-    new_text = dpg.get_value(sender)
-    get_node_data("editor")
-    for link in dict_for_json_export["links"]:
-        if dict_for_json_export["links"][link]["start_attr"] == user_data[0]:
-            for node in dict_for_json_export["nodes"]:
-                for att in dict_for_json_export["nodes"][node]["attributes"]:
-                    if att == dict_for_json_export["links"][link]["end_attr"]:
-                        dpg.set_item_label(node, new_text)
 
 # Function to get all links associated with a node (both input and output)
 def get_links_for_node(node_id):
@@ -273,20 +270,22 @@ def import_json(sender, app_data, user_data):
             else:
                 set_node_background_color(node_id, (255, 51, 51))  # Red background
             for attr_id, attr_data in node_data["attributes"].items():
+                shape = dpg.mvNode_PinShape_CircleFilled
                 if attr_data["type"] == "mvNode_Attr_Output":
                     attribute_type=dpg.mvNode_Attr_Output
+                    if attr_data["label"] == "node state in":
+                        shape = dpg.mvNode_PinShape_Triangle   
                 elif attr_data["type"] == "mvNode_Attr_Input":
+                    if attr_data["label"] == "node state in":
+                        shape = dpg.mvNode_PinShape_Triangle   
                     attribute_type=dpg.mvNode_Attr_Input
                 else:
-                    attribute_type=dpg.mvNode_Attr_Static           
-                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"]) as att_id:
+                    attribute_type=dpg.mvNode_Attr_Static      
+                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"], shape=shape) as att_id:
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
                         if input_data["type"] == "mvAppItemType::mvInputText" and attribute_type == dpg.mvNode_Attr_Static:
                             dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
-                        elif input_data["type"] == "mvAppItemType::mvInputText":
-                            dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], 
-                                               user_data=[dpg.get_alias_id(att_id)], callback=update_node_label)
                         elif input_data["type"] == "mvAppItemType::mvInputFloat":
                             dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
                         elif input_data["type"] == "mvAppItemType::mvText":
@@ -361,7 +360,3 @@ while dpg.is_dearpygui_running():
     dpg.render_dearpygui_frame()
 # dpg.start_dearpygui()
 dpg.destroy_context()
-
-
-# TODO delete constrain on node transitions -> 
-# if you delete the link between node state and corresponding node transition delete the node transition and the attribute connected
