@@ -117,7 +117,7 @@ def add_node_node_callback(sender, app_data):
     wind_pos = dpg.get_item_pos("node_editor_popup")
     pos_offset = wind_pos[0] - 400
     node_id = dpg.add_node(parent="editor", label=dpg.get_value("label_node"), user_data="node_state", pos=[pos_offset, wind_pos[1]])
-    set_node_background_color(node_id, (183, 179, 39))  # Green background
+    set_node_background_color(node_id, (0, 146, 204))  # Green background
     with dpg.popup(node_id):
         for i in popup_values:
             dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
@@ -138,28 +138,53 @@ def popup_callback(sender, app_data, user_data):
     elif command == "Change node label":
         dpg.configure_item("node_change_label_popup", show=True, user_data=node_id)
     elif command == "Mark as Init state":
-        set_node_background_color(node_id, (0, 146, 204))
+        set_node_background_color(node_id, (183, 179, 39))
 
 def add_node_link_callback(sender, app_data, user_data):
     node_id = dpg.add_node(parent="editor", user_data="node_transition")
     node_pos = dpg.get_item_pos(user_data[1])
     if user_data[2] == "right":
         pos_offset = node_pos[0] + 200
-        att_in_id = add_in_att_no_input(sender=node_id, app_data=app_data, user_data="")
-        add_out_att_no_input(sender=node_id, app_data=app_data, user_data="node transition out")
+        att_in_id = add_in_att_no_input_transition(sender=node_id, app_data=app_data, user_data="")
+        add_out_att_no_input_transition(sender=node_id, app_data=app_data, user_data="node transition out")
     else:
         pos_offset = node_pos[0] - 300
-        att_in_id = add_out_att_no_input(sender=node_id, app_data=app_data, user_data="")
-        add_in_att_no_input(sender=node_id, app_data=app_data, user_data="node transition out")
+        att_in_id = add_out_att_no_input_transition(sender=node_id, app_data=app_data, user_data="")
+        add_in_att_no_input_transition(sender=node_id, app_data=app_data, user_data="node transition out")
     dpg.set_item_pos(node_id, [pos_offset, node_pos[1]])
     add_static_att(sender=node_id, app_data=app_data)
     add_static_att_float(sender=node_id, app_data=app_data)
+    add_static_att_silent(sender=node_id, app_data=app_data)
+    add_preconditions_group(sender=node_id, app_data=app_data)
     set_node_background_color(node_id, (255, 51, 51))  # Red background
     link_callback(sender="editor", app_data=[user_data[0], att_in_id])
     with dpg.popup(node_id):
         for i in popup_node_transition:
             dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
     return node_id
+
+def add_preconditions_group(sender, app_data):
+    with dpg.node_attribute(parent=sender, label="", attribute_type=dpg.mvNode_Attr_Static):
+        with dpg.child_window(width=200, height=90, border=True):
+            dpg.add_text(default_value="PRE", indent=5)
+            dpg.add_spacer(height=5)
+            dpg.add_input_text(multiline=True)
+            dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+    with dpg.node_attribute(parent=sender, label="", attribute_type=dpg.mvNode_Attr_Static):
+        with dpg.child_window(width=200, height=90, border=True):
+            dpg.add_text(default_value="POST", indent=5)
+            dpg.add_spacer(height=5)
+            dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))                     
+
+def create_background_theme(color):
+    with dpg.theme() as theme:
+        with dpg.theme_component(dpg.mvAll):
+            dpg.add_theme_color(dpg.mvThemeCol_ChildBg, color, category=dpg.mvThemeCat_Core)
+    return theme
+
+def add_static_att_silent(sender, app_data):
+    with dpg.node_attribute(parent=sender, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
+        dpg.add_checkbox(label="Silent")
 
 def add_static_att(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
@@ -169,10 +194,43 @@ def add_static_att_float(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_input_float(label="Cost", width=150)
 
+# List of possible variables
+variables = ["speed", "temperature", "vibration"]
+
+# List of comparison operators
+operators = ["=", "<", ">", "<=", ">="]
+
+# List of logical operators for conditions
+logical_operators = ["AND", "OR"]
+
+def create_condition():
+    with dpg.group(horizontal=True):
+        # Add combo for logical operator (AND/OR)
+        dpg.add_combo(logical_operators, default_value="AND", label="Logic", width=60)
+        
+        # Add combo for variable name
+        dpg.add_combo(variables, default_value=variables[0], label="Variable", width=100)
+        
+        # Add combo for operator
+        dpg.add_combo(operators, default_value="=", label="Operator", width=50)
+        
+        # Add input for comparison value
+        dpg.add_input_float(default_value=0.0, label="Value", width=100)
+
+def add_in_att_no_input_transition(sender, app_data, user_data):
+    with dpg.node_attribute(parent=sender, label=user_data) as att_id:
+        pass
+    return att_id
+
+def add_out_att_no_input_transition(sender, app_data, user_data):
+    with dpg.node_attribute(parent=sender, label=user_data, attribute_type=dpg.mvNode_Attr_Output) as att_id:
+        pass
+    return att_id
+
 def add_in_att_no_input(sender, app_data, user_data):
     shape = dpg.mvNode_PinShape_CircleFilled
     if user_data == "node state in":
-        shape = dpg.mvNode_PinShape_Triangle
+        shape = dpg.mvNode_PinShape_TriangleFilled
     with dpg.node_attribute(parent=sender, label=user_data, shape=shape) as att_id:
         dpg.add_text("")
     return att_id
@@ -180,7 +238,7 @@ def add_in_att_no_input(sender, app_data, user_data):
 def add_out_att_no_input(sender, app_data, user_data):
     shape = dpg.mvNode_PinShape_CircleFilled
     if user_data == "node state in":
-        shape = dpg.mvNode_PinShape_Triangle
+        shape = dpg.mvNode_PinShape_TriangleFilled
     with dpg.node_attribute(parent=sender, label=user_data, attribute_type=dpg.mvNode_Attr_Output, shape=shape) as att_id:
         dpg.add_text("")
     return att_id
@@ -270,25 +328,28 @@ def import_json(sender, app_data, user_data):
     for node_id, node_data in data["nodes"].items():
         with dpg.node(tag=node_id, label=node_data["label"], pos=node_data["position"], parent="editor", user_data=node_data["type"]):
             if node_data["type"] == "node_state":
-                set_node_background_color(node_id, (183, 179, 39))  # Green background
+                set_node_background_color(node_id, (0, 146, 204))  # Green background
                 with dpg.popup(node_id):
                     for i in popup_values:
                         dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
             else:
                 set_node_background_color(node_id, (255, 51, 51))  # Red background
+                with dpg.popup(node_id):
+                    for i in popup_node_transition:
+                        dpg.add_selectable(label=i, user_data=[node_id, i], callback=popup_callback)
             for attr_id, attr_data in node_data["attributes"].items():
                 shape = dpg.mvNode_PinShape_CircleFilled
                 if attr_data["type"] == "mvNode_Attr_Output":
                     attribute_type=dpg.mvNode_Attr_Output
                     if attr_data["label"] == "node state in":
-                        shape = dpg.mvNode_PinShape_Triangle   
+                        shape = dpg.mvNode_PinShape_TriangleFilled 
                 elif attr_data["type"] == "mvNode_Attr_Input":
                     if attr_data["label"] == "node state in":
-                        shape = dpg.mvNode_PinShape_Triangle   
+                        shape = dpg.mvNode_PinShape_TriangleFilled   
                     attribute_type=dpg.mvNode_Attr_Input
                 else:
                     attribute_type=dpg.mvNode_Attr_Static      
-                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"], shape=shape) as att_id:
+                with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"], shape=shape):
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
                         if input_data["type"] == "mvAppItemType::mvInputText" and attribute_type == dpg.mvNode_Attr_Static:
@@ -336,7 +397,7 @@ with dpg.handler_registry():
 with dpg.window(modal=True, show=False, tag="node_editor_popup"):
     dpg.add_text("Add label to node")
     dpg.add_separator()
-    dpg.add_input_text(tag="label_node", label="label")
+    dpg.add_input_text(tag="label_node")
     with dpg.group(horizontal=True):
         dpg.add_button(label="OK", width=75, callback=add_node_node_callback)
         dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("node_editor_popup", show=False))
