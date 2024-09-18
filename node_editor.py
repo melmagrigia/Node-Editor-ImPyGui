@@ -47,10 +47,19 @@ def get_node_data(node_editor_id):
             
             input_data = {}
             for input_id in input_fields:
-                # Collect the input field's value and label
-                input_label = dpg.get_item_label(input_id)
-                input_value = dpg.get_value(input_id)
-                input_type = dpg.get_item_type(input_id)
+                if dpg.get_item_type(input_id) == "mvAppItemType::mvChildWindow":
+                    child_window_fields = dpg.get_item_children(input_id, 1)
+                    for nested_input in child_window_fields:
+                        if dpg.get_item_type(nested_input) == "mvAppItemType::mvInputText":
+                            input_label = dpg.get_item_label(nested_input)
+                            input_value = dpg.get_value(nested_input)
+                            input_type = dpg.get_item_type(nested_input)
+                            break
+                else:
+                    # Collect the input field's value and label
+                    input_label = dpg.get_item_label(input_id)
+                    input_value = dpg.get_value(input_id)
+                    input_type = dpg.get_item_type(input_id)
                 
                 # Store input label and value
                 input_data[input_id] = {
@@ -164,16 +173,15 @@ def add_node_link_callback(sender, app_data, user_data):
     return node_id
 
 def add_preconditions_group(sender, app_data):
-    with dpg.node_attribute(parent=sender, label="", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=sender, label="pre", attribute_type=dpg.mvNode_Attr_Static):
         with dpg.child_window(width=200, height=90, border=True):
             dpg.add_text(default_value="PRE", indent=5)
-            dpg.add_spacer(height=5)
-            dpg.add_input_text(multiline=True)
+            dpg.add_input_text(multiline=True, width=200, height=63, label="Pre")
             dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
-    with dpg.node_attribute(parent=sender, label="", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=sender, label="post", attribute_type=dpg.mvNode_Attr_Static):
         with dpg.child_window(width=200, height=90, border=True):
             dpg.add_text(default_value="POST", indent=5)
-            dpg.add_spacer(height=5)
+            dpg.add_input_text(multiline=True, width=200, height=63, label="Post")
             dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))                     
 
 def create_background_theme(color):
@@ -183,7 +191,7 @@ def create_background_theme(color):
     return theme
 
 def add_static_att_silent(sender, app_data):
-    with dpg.node_attribute(parent=sender, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=sender, label="Operation_type", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_checkbox(label="Silent")
 
 def add_static_att(sender, app_data):
@@ -193,29 +201,6 @@ def add_static_att(sender, app_data):
 def add_static_att_float(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_input_float(label="Cost", width=150)
-
-# List of possible variables
-variables = ["speed", "temperature", "vibration"]
-
-# List of comparison operators
-operators = ["=", "<", ">", "<=", ">="]
-
-# List of logical operators for conditions
-logical_operators = ["AND", "OR"]
-
-def create_condition():
-    with dpg.group(horizontal=True):
-        # Add combo for logical operator (AND/OR)
-        dpg.add_combo(logical_operators, default_value="AND", label="Logic", width=60)
-        
-        # Add combo for variable name
-        dpg.add_combo(variables, default_value=variables[0], label="Variable", width=100)
-        
-        # Add combo for operator
-        dpg.add_combo(operators, default_value="=", label="Operator", width=50)
-        
-        # Add input for comparison value
-        dpg.add_input_float(default_value=0.0, label="Value", width=100)
 
 def add_in_att_no_input_transition(sender, app_data, user_data):
     with dpg.node_attribute(parent=sender, label=user_data) as att_id:
@@ -228,17 +213,13 @@ def add_out_att_no_input_transition(sender, app_data, user_data):
     return att_id
 
 def add_in_att_no_input(sender, app_data, user_data):
-    shape = dpg.mvNode_PinShape_CircleFilled
-    if user_data == "node state in":
-        shape = dpg.mvNode_PinShape_TriangleFilled
+    shape = dpg.mvNode_PinShape_TriangleFilled
     with dpg.node_attribute(parent=sender, label=user_data, shape=shape) as att_id:
         dpg.add_text("")
     return att_id
 
 def add_out_att_no_input(sender, app_data, user_data):
-    shape = dpg.mvNode_PinShape_CircleFilled
-    if user_data == "node state in":
-        shape = dpg.mvNode_PinShape_TriangleFilled
+    shape = dpg.mvNode_PinShape_TriangleFilled
     with dpg.node_attribute(parent=sender, label=user_data, attribute_type=dpg.mvNode_Attr_Output, shape=shape) as att_id:
         dpg.add_text("")
     return att_id
@@ -352,11 +333,23 @@ def import_json(sender, app_data, user_data):
                 with dpg.node_attribute(tag=attr_id, attribute_type=attribute_type, label=attr_data["label"], shape=shape):
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
-                        if input_data["type"] == "mvAppItemType::mvInputText" and attribute_type == dpg.mvNode_Attr_Static:
+                        if input_data["label"] == "p":
                             dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
-                        elif input_data["type"] == "mvAppItemType::mvInputFloat":
+                        elif input_data["label"] == "Cost":
                             dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
-                        elif input_data["type"] == "mvAppItemType::mvText":
+                        elif input_data["label"] == "Silent":
+                            dpg.add_checkbox(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                        elif input_data["label"] == "Pre":
+                            with dpg.child_window(width=200, height=90, border=True):
+                                dpg.add_text(default_value="PRE", indent=5)
+                                dpg.add_input_text(tag=input_id, multiline=True, width=200, height=63, label=input_data["label"], default_value=input_data["value"])
+                                dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+                        elif input_data["label"] == "Post":
+                            with dpg.child_window(width=200, height=90, border=True):
+                                dpg.add_text(default_value="POST", indent=5)
+                                dpg.add_input_text(tag=input_id, multiline=True, width=200, height=63, label=input_data["label"], default_value=input_data["value"])
+                                dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+                        else:
                             dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
 
     # Create links
