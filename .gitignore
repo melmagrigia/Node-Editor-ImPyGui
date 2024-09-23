@@ -1,5 +1,5 @@
-imPyGuiEnv/
 .vscode/
+.vagrant/
 stuff.py
 dpg.ini
 d.py
