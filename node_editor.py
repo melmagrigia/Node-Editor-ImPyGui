@@ -1,5 +1,8 @@
 import dearpygui.dearpygui as dpg
 import json
+import yaml
+import os
+#from utils import *
 
 dpg.create_context()
 
@@ -8,8 +11,11 @@ dict_for_json_export = {
     "links": {}
 }
 
+dict_short_json = {}
+
 def get_node_data(node_editor_id):
     dict_for_json_export["nodes"] = {}
+    dict_short_json.clear()
     # Get all nodes in the node editor
     nodes = dpg.get_item_children(node_editor_id, 1)  # 1 corresponds to children of type 'mvAppItemType::mvNode'
     
@@ -27,6 +33,7 @@ def get_node_data(node_editor_id):
         attributes = dpg.get_item_children(node_id, 1)  # 1 corresponds to children of type 'mvAppItemType::mvNodeAttribute'
         
         attributes_data = {}
+        attributes_short = {}
         for attr_id in attributes:
             # Get attribute label
             attr_label = dpg.get_item_label(attr_id)
@@ -46,6 +53,7 @@ def get_node_data(node_editor_id):
             input_fields = dpg.get_item_children(attr_id, 1)  # 1 corresponds to children of type 'mvAppItemType'
             
             input_data = {}
+            input_short = {}
             for input_id in input_fields:
                 if dpg.get_item_type(input_id) == "mvAppItemType::mvChildWindow":
                     child_window_fields = dpg.get_item_children(input_id, 1)
@@ -67,6 +75,9 @@ def get_node_data(node_editor_id):
                     "value": input_value,
                     "type": input_type
                 }
+
+                # Short dict version
+                input_short[input_label] = input_value
             
             # Store attribute label and its inputs
             attributes_data[attr_id] = {
@@ -74,7 +85,7 @@ def get_node_data(node_editor_id):
                 "type": attr_type,
                 "inputs": input_data
             }
-
+            attributes_short[attr_label] = input_short
         # Store node label, attributes, and their values in the dictionary
         dict_for_json_export["nodes"][node_id] = {
             "label": node_label,
@@ -83,6 +94,8 @@ def get_node_data(node_editor_id):
             "type": node_type
         }
 
+        # Short dict version
+        dict_short_json.update({node_label: (node_type, attributes_short)})
     return dict_for_json_export
 
 # callback runs when user attempts to connect attributes
@@ -199,8 +212,8 @@ def add_static_att(sender, app_data):
         dpg.add_input_text(label="p", width=150)
 
 def add_static_att_float(sender, app_data):
-    with dpg.node_attribute(parent=sender, label="Cost", attribute_type=dpg.mvNode_Attr_Static):
-        dpg.add_input_float(label="Cost", width=150)
+    with dpg.node_attribute(parent=sender, label="Reward", attribute_type=dpg.mvNode_Attr_Static):
+        dpg.add_input_float(label="Reward", width=150)
 
 def add_in_att_no_input_transition(sender, app_data, user_data):
     with dpg.node_attribute(parent=sender, label=user_data) as att_id:
@@ -323,7 +336,7 @@ def import_json(sender, app_data, user_data):
                 if attr_data["type"] == "mvNode_Attr_Output":
                     attribute_type=dpg.mvNode_Attr_Output
                     if attr_data["label"] == "node state in":
-                        shape = dpg.mvNode_PinShape_TriangleFilled 
+                        shape = dpg.mvNode_PinShape_QuadFilled
                 elif attr_data["type"] == "mvNode_Attr_Input":
                     if attr_data["label"] == "node state in":
                         shape = dpg.mvNode_PinShape_TriangleFilled   
@@ -335,7 +348,7 @@ def import_json(sender, app_data, user_data):
                     for input_id, input_data in attr_data["inputs"].items():
                         if input_data["label"] == "p":
                             dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
-                        elif input_data["label"] == "Cost":
+                        elif input_data["label"] == "Reward":
                             dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
                         elif input_data["label"] == "Silent":
                             dpg.add_checkbox(tag=input_id, label=input_data["label"], default_value=input_data["value"])
@@ -358,6 +371,15 @@ def import_json(sender, app_data, user_data):
         attr_2 = dpg.get_alias_id(str(link["end_attr"]))
         link_callback(sender="editor", app_data=[attr_1, attr_2])
 
+def yaml_export():
+    get_node_data("editor")
+
+    selected_file = "ciao.yaml"
+    # Export the node data to the selected file
+    with open(selected_file, "w") as outfile:
+        yaml.dump(dict_short_json, outfile, indent=4, sort_keys=False)
+    print(f"File saved to: {selected_file}")
+
 def json_import():
     dpg.show_item("file_dialog_load")
 
@@ -376,7 +398,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
             dpg.add_text("Ctrl+Click to remove a link", bullet=True)
             dpg.add_button(label="Export", callback=json_export)
             dpg.add_button(label="Import", callback=json_import)
-            dpg.add_button(label="Generate API Stub")
+            dpg.add_button(label="Generate API Stub", callback=yaml_export)
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, 
@@ -406,9 +428,13 @@ with dpg.window(modal=True, show=False, tag="node_change_label_popup", user_data
                                                                                  dpg.configure_item("node_change_label_popup", show=False)))
         dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("node_change_label_popup", show=False))
 
+# Compute the path to the font file dynamically based on the script's location
+font_file = "arial-unicode-ms.ttf"
+font_path = os.path.join(os.path.dirname(__file__), "", font_file)
+
 # Load a custom font that supports a wide range of Unicode characters
 with dpg.font_registry():
-    with dpg.font("/home/pablo/Thesis/Mecella/imPyGUI/arial-unicode-ms.ttf", 20) as default_font:
+    with dpg.font(font_path, 20) as default_font:
         # Add font range to include basic Latin and mathematical symbols
         dpg.add_font_range_hint(dpg.mvFontRangeHint_Default)
         dpg.add_font_range(0x2200, 0x22FF)  # Range for mathematical symbols
