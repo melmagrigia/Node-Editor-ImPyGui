@@ -2,7 +2,7 @@ import dearpygui.dearpygui as dpg
 import json
 import yaml
 import os
-#from utils import *
+from utils import *
 
 dpg.create_context()
 
@@ -11,11 +11,11 @@ dict_for_json_export = {
     "links": {}
 }
 
-dict_short_json = {}
+list_json = []
 
 def get_node_data(node_editor_id):
     dict_for_json_export["nodes"] = {}
-    dict_short_json.clear()
+    list_json.clear()
     # Get all nodes in the node editor
     nodes = dpg.get_item_children(node_editor_id, 1)  # 1 corresponds to children of type 'mvAppItemType::mvNode'
     
@@ -53,7 +53,7 @@ def get_node_data(node_editor_id):
             input_fields = dpg.get_item_children(attr_id, 1)  # 1 corresponds to children of type 'mvAppItemType'
             
             input_data = {}
-            input_short = {}
+
             for input_id in input_fields:
                 if dpg.get_item_type(input_id) == "mvAppItemType::mvChildWindow":
                     child_window_fields = dpg.get_item_children(input_id, 1)
@@ -75,9 +75,6 @@ def get_node_data(node_editor_id):
                     "value": input_value,
                     "type": input_type
                 }
-
-                # Short dict version
-                input_short[input_label] = input_value
             
             # Store attribute label and its inputs
             attributes_data[attr_id] = {
@@ -85,7 +82,10 @@ def get_node_data(node_editor_id):
                 "type": attr_type,
                 "inputs": input_data
             }
-            attributes_short[attr_label] = input_short
+
+            if attr_label != "node transition in" and attr_label != "node transition out" and attr_label != "":
+                attributes_short[attr_label] = input_value
+
         # Store node label, attributes, and their values in the dictionary
         dict_for_json_export["nodes"][node_id] = {
             "label": node_label,
@@ -95,7 +95,9 @@ def get_node_data(node_editor_id):
         }
 
         # Short dict version
-        dict_short_json.update({node_label: (node_type, attributes_short)})
+        if node_type == "node_transition":
+            attributes_short["operation id"] = node_label
+            list_json.append(attributes_short)
     return dict_for_json_export
 
 # callback runs when user attempts to connect attributes
@@ -167,11 +169,11 @@ def add_node_link_callback(sender, app_data, user_data):
     node_pos = dpg.get_item_pos(user_data[1])
     if user_data[2] == "right":
         pos_offset = node_pos[0] + 200
-        att_in_id = add_in_att_no_input_transition(sender=node_id, app_data=app_data, user_data="")
+        att_in_id = add_in_att_no_input_transition(sender=node_id, app_data=app_data, user_data="node transition in")
         add_out_att_no_input_transition(sender=node_id, app_data=app_data, user_data="node transition out")
     else:
         pos_offset = node_pos[0] - 300
-        att_in_id = add_out_att_no_input_transition(sender=node_id, app_data=app_data, user_data="")
+        att_in_id = add_out_att_no_input_transition(sender=node_id, app_data=app_data, user_data="node transition in")
         add_in_att_no_input_transition(sender=node_id, app_data=app_data, user_data="node transition out")
     dpg.set_item_pos(node_id, [pos_offset, node_pos[1]])
     add_static_att(sender=node_id, app_data=app_data)
@@ -186,16 +188,34 @@ def add_node_link_callback(sender, app_data, user_data):
     return node_id
 
 def add_preconditions_group(sender, app_data):
-    with dpg.node_attribute(parent=sender, label="pre", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=sender, label="Preconditions", attribute_type=dpg.mvNode_Attr_Static):
         with dpg.child_window(width=200, height=90, border=True):
             dpg.add_text(default_value="PRE", indent=5)
-            dpg.add_input_text(multiline=True, width=200, height=63, label="Pre")
+            dpg.add_input_text(multiline=True, tracked=True, width=200, height=63, label="Pre", callback=check_pre_post)
             dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
-    with dpg.node_attribute(parent=sender, label="post", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=sender, label="Effects", attribute_type=dpg.mvNode_Attr_Static):
         with dpg.child_window(width=200, height=90, border=True):
             dpg.add_text(default_value="POST", indent=5)
-            dpg.add_input_text(multiline=True, width=200, height=63, label="Post")
-            dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))                     
+            dpg.add_input_text(multiline=True, tracked=True, width=200, height=63, label="Post", callback=check_pre_post)
+            dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+
+def check_pre_post(sender, app_data, user_data):
+    if not is_boolean_expression(app_data):
+        #print(f"'{app_data}' is a valid boolean expression")
+        set_error_style(sender)
+    else:
+        reset_style(sender)
+
+def set_error_style(item):
+    with dpg.theme() as theme:
+        with dpg.theme_component(dpg.mvInputText):
+            dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 0, 0))  # Red text
+            dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (255, 200, 200))  # Light red background
+
+    dpg.bind_item_theme(item, theme)
+
+def reset_style(item):
+    dpg.bind_item_theme(item, None)  # Reset theme to default
 
 def create_background_theme(color):
     with dpg.theme() as theme:
@@ -204,7 +224,7 @@ def create_background_theme(color):
     return theme
 
 def add_static_att_silent(sender, app_data):
-    with dpg.node_attribute(parent=sender, label="Operation_type", attribute_type=dpg.mvNode_Attr_Static):
+    with dpg.node_attribute(parent=sender, label="Silent", attribute_type=dpg.mvNode_Attr_Static):
         dpg.add_checkbox(label="Silent")
 
 def add_static_att(sender, app_data):
@@ -355,12 +375,14 @@ def import_json(sender, app_data, user_data):
                         elif input_data["label"] == "Pre":
                             with dpg.child_window(width=200, height=90, border=True):
                                 dpg.add_text(default_value="PRE", indent=5)
-                                dpg.add_input_text(tag=input_id, multiline=True, width=200, height=63, label=input_data["label"], default_value=input_data["value"])
+                                dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
+                                                   default_value=input_data["value"], callback=check_pre_post)
                                 dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
                         elif input_data["label"] == "Post":
                             with dpg.child_window(width=200, height=90, border=True):
                                 dpg.add_text(default_value="POST", indent=5)
-                                dpg.add_input_text(tag=input_id, multiline=True, width=200, height=63, label=input_data["label"], default_value=input_data["value"])
+                                dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
+                                                   default_value=input_data["value"], callback=check_pre_post)
                                 dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
                         else:
                             dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
@@ -374,10 +396,10 @@ def import_json(sender, app_data, user_data):
 def yaml_export():
     get_node_data("editor")
 
-    selected_file = "ciao.yaml"
+    selected_file = "modeling_short.json"
     # Export the node data to the selected file
     with open(selected_file, "w") as outfile:
-        yaml.dump(dict_short_json, outfile, indent=4, sort_keys=False)
+        json.dump(list_json, outfile, indent=2,sort_keys=False)
     print(f"File saved to: {selected_file}")
 
 def json_import():
@@ -440,6 +462,26 @@ with dpg.font_registry():
         dpg.add_font_range(0x2200, 0x22FF)  # Range for mathematical symbols
 
 dpg.bind_font(default_font)
+
+
+# Create a light theme
+with dpg.theme() as light_theme:
+    with dpg.theme_component(dpg.mvAll):
+        # dpg.add_theme_color(dpg.mvThemeCol_Text, (0, 0, 0), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_WindowBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_Border, (200, 200, 200), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_Button, (200, 200, 200), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, (170, 170, 170), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, (150, 150, 150), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_PopupBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_FrameBgHovered, (230, 230, 230), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_FrameBgActive, (210, 210, 210), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_style(dpg.mvNodeStyleVar_PinTriangleSideLength, 15, category=dpg.mvThemeCat_Nodes)
+
+# Bind the theme globally
+dpg.bind_theme(light_theme)
 
 # For debug need to deactivate the thread management
 dpg.configure_app(manual_callback_management=True)

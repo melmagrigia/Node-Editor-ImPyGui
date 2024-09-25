@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: Industrial API
+  description: Passive assets specifications
+  version: 1.0.1
+paths:
+  /passiveassets:
+    get:
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: string
+  /passiveassets/{passiveAssetId}:
+    get:
+      parameters:
+        - in: path
+          name: passiveAssetId
+          schema: 
+            type: string
+          required: true
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Variable'
+  /state/{passiveAssetId}:
+    get:
+      parameters:
+        - in: path
+          name: passiveAssetId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+
+components:
+  schemas:
+    Variable:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        unitMeasure:
+          type: string
+    AssVariable:
+      type: object
+      properties:
+        variable:
+          $ref: '#/components/schemas/Variable'
+        value:
+          type: string
+          description: Variable value
+    State:
+      type: array
+      items:
+        $ref: '#/components/schemas/AssVariable'
+      description: State of the asset

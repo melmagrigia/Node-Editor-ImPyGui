@@ -1,5 +1,6 @@
 .vscode/
 .vagrant/
+__pycache__/
 stuff.py
 dpg.ini
 d.py
