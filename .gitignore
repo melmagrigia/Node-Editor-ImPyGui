@@ -1,6 +1,9 @@
 .vscode/
 .vagrant/
 __pycache__/
+build/
+dist/
+node_editor.spec
 stuff.py
 dpg.ini
 d.py
