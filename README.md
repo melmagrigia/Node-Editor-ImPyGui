@@ -6,12 +6,34 @@ A Node editor Python App developed with [DearPyGui](https://github.com/hoffstadt
 2. Activate the environment
 3. Install dependencies
 
-`pip install -r ./requirements.txt`
+    `pip install -r ./requirements.txt`
 
 4. then start the application
 
-`python ./node_editor.py`
+    `python ./node_editor.py`
+
+## Run with Vagrant
+
+1. You need Vagrant, virtualbox and the virtualbox guest addition installed on the host machine
+
+2. From the project directory run
+
+    `vagrant up`
+
+3. From inside the guest machine, open a terminal
+
+    `source editor-venv/bin/activate`
+    
+    `cd /vagrant`
+
+    `python ./node_editor.py`
 
 ## Editor usage
-To add a new node press the central botton of the mouse
-To add a node to
+
+- Right Click to Add a State Node
+
+- Right Click on a State Node to Open Actions Dialog
+
+- Ctrl+Click to remove a link
+
+The Generate API Stub functionality is still in development.
