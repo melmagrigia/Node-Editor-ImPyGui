@@ -3,6 +3,7 @@ import json
 import yaml
 import os
 from utils import *
+from swagger_codegen_utils import *
 
 dpg.create_context()
 
@@ -420,7 +421,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
             dpg.add_text("Ctrl+Click to remove a link", bullet=True)
             dpg.add_button(label="Export", callback=json_export)
             dpg.add_button(label="Import", callback=json_import)
-            dpg.add_button(label="Generate API Stub", callback=yaml_export)
+            dpg.add_button(label="Generate API Stub", callback=lambda: dpg.show_item("generate_stub_popup"))
             dpg.add_button(label="Delete Selected Nodes", callback=del_node_callback)
         with dpg.child_window(autosize_x=True, autosize_y=True):
             with dpg.node_editor(tag="editor", minimap=True, minimap_location=dpg.mvNodeMiniMap_Location_BottomRight, 
@@ -449,6 +450,26 @@ with dpg.window(modal=True, show=False, tag="node_change_label_popup", user_data
                                                                                  dpg.get_value("change_label_input")), 
                                                                                  dpg.configure_item("node_change_label_popup", show=False)))
         dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("node_change_label_popup", show=False))
+
+languages_options = ['python']
+
+frameworks_options = ['python-flask', 'spring']
+
+swagger_file = "swagger_active_asset.json"
+swagger_url = "https://generator.swagger.io/api/gen/servers"
+swagger_path = os.path.join(os.path.dirname(__file__), "swagger/", swagger_file)
+
+# popup modal for generate stub functionality
+with dpg.window(modal=True, show=False, tag="generate_stub_popup", width=400):
+    dpg.add_text("Generate Stub from Diagram")
+    dpg.add_separator()
+    with dpg.group(horizontal=True):
+        dpg.add_combo(items=frameworks_options, tag="framework_combo", width=100)
+        dpg.add_combo(items=languages_options, tag="language_combo", width=100)
+    with dpg.group(horizontal=True):
+        dpg.add_button(label="OK", width=75, callback=lambda: (dpg.configure_item("generate_stub_popup", show=False), 
+                                                               POST_SERVER(swagger_path, dpg.get_value("framework_combo"), swagger_url)))
+        dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("generate_stub_popup", show=False))
 
 # Compute the path to the font file dynamically based on the script's location
 font_file = "arial-unicode-ms.ttf"
