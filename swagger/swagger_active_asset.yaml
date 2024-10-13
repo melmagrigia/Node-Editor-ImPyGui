@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: Industrial API
+  description: Active assets specifications
+  version: 1.0.1
+servers:
+- url: /
+paths:
+  /variables:
+    get:
+      summary: Get the variables of the asset
+      operationId: variables_get
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Variable'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /state:
+    get:
+      summary: Get current state of the asset
+      operationId: state_get
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /operations:
+    get:
+      summary: Get executable operations of the asset
+      operationId: operations_get
+      responses:
+        "200":
+          description: List of executable operations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operation'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /operation/{operationId}:
+    post:
+      summary: Execute an operation of the asset
+      operationId: operation_operation_id_post
+      parameters:
+      - name: operationId
+        in: path
+        description: Operation id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Operation/properties/operationID'
+      requestBody:
+        description: Parameters of the operation
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: false
+      responses:
+        "200":
+          description: Operation executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    Variable:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        unitMeasure:
+          type: string
+      example:
+        name: name
+        type: type
+        unitMeasure: unitMeasure
+    AssVariable:
+      type: object
+      properties:
+        variable:
+          $ref: '#/components/schemas/Variable'
+        value:
+          type: string
+          description: Variable value
+      example:
+        variable:
+          name: name
+          type: type
+          unitMeasure: unitMeasure
+        value: value
+    State:
+      type: array
+      description: State of the asset
+      items:
+        $ref: '#/components/schemas/AssVariable'
+    Operation:
+      type: object
+      properties:
+        operationID:
+          type: string
+          description: Operation ID
+        preconditions:
+          type: string
+        effects:
+          type: array
+          description: Effects of the operation
+          items:
+            $ref: '#/components/schemas/Effect'
+        parameters:
+          type: string
+          description: Parameters of the operation (passive object ids and )
+      example:
+        effects:
+        - reward: 0.80082819046101150206595775671303272247314453125
+          probability: 6.02745618307040320615897144307382404804229736328125
+          nextState:
+          - variable:
+              name: name
+              type: type
+              unitMeasure: unitMeasure
+            value: value
+          - variable:
+              name: name
+              type: type
+              unitMeasure: unitMeasure
+            value: value
+        - reward: 0.80082819046101150206595775671303272247314453125
+          probability: 6.02745618307040320615897144307382404804229736328125
+          nextState:
+          - variable:
+              name: name
+              type: type
+              unitMeasure: unitMeasure
+            value: value
+          - variable:
+              name: name
+              type: type
+              unitMeasure: unitMeasure
+            value: value
+        preconditions: preconditions
+        operationID: operationID
+        parameters: parameters
+    Effect:
+      type: object
+      properties:
+        nextState:
+          $ref: '#/components/schemas/State'
+        reward:
+          type: number
+          format: double
+        probability:
+          type: number
+          format: double
+      description: "Next state, probability and reward"
+      example:
+        reward: 0.80082819046101150206595775671303272247314453125
+        probability: 6.02745618307040320615897144307382404804229736328125
+        nextState:
+        - variable:
+            name: name
+            type: type
+            unitMeasure: unitMeasure
+          value: value
+        - variable:
+            name: name
+            type: type
+            unitMeasure: unitMeasure
+          value: value
+

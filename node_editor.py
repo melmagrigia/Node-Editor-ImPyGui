@@ -459,6 +459,10 @@ swagger_file = "swagger_active_asset.json"
 swagger_url = "https://generator.swagger.io/api/gen/servers"
 swagger_path = os.path.join(os.path.dirname(__file__), "swagger/", swagger_file)
 
+open_api_file = "openapi3_0_active_asset.json"
+openapigen_url = "http://api.openapi-generator.tech/api/gen/servers"
+openapi_path = os.path.join(os.path.dirname(__file__), "openapi3_0/", open_api_file)
+
 # popup modal for generate stub functionality
 with dpg.window(modal=True, show=False, tag="generate_stub_popup", width=400):
     dpg.add_text("Generate Stub from Diagram")
@@ -468,7 +472,7 @@ with dpg.window(modal=True, show=False, tag="generate_stub_popup", width=400):
         dpg.add_combo(items=languages_options, tag="language_combo", width=100)
     with dpg.group(horizontal=True):
         dpg.add_button(label="OK", width=75, callback=lambda: (dpg.configure_item("generate_stub_popup", show=False), 
-                                                               POST_SERVER(swagger_path, dpg.get_value("framework_combo"), swagger_url)))
+                                                               POST_SERVER(openapi_path, dpg.get_value("framework_combo"), openapigen_url)))
         dpg.add_button(label="Cancel", width=75, callback=lambda: dpg.configure_item("generate_stub_popup", show=False))
 
 # Compute the path to the font file dynamically based on the script's location

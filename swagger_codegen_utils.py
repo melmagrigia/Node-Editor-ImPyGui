@@ -1,6 +1,7 @@
 import urllib3
 import json
 import os
+import zipfile
 
 zip_dir_path = os.path.join(os.path.dirname(__file__), "zips/")
 
@@ -74,6 +75,22 @@ def GET_CODE(url, save_path):
 
     # Close the response object
     response.release_conn()
+
+    unzip_file(save_path)
+
+
+def unzip_file(zip_path):
+    # Extract the directory from the zip_path
+    extract_dir = os.path.dirname(zip_path)
+
+    # Unzip the file
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_dir)
+        print(f"File unzipped in {extract_dir}")
+
+    # Optional: Remove the ZIP file after extraction
+    os.remove(zip_path)
+    print(f"Deleted ZIP file: {zip_path}")
 
 
 if __name__ == "__main__":

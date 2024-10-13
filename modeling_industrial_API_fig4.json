@@ -1,18 +1,18 @@
 {
     "nodes": {
-        "58": {
+        "70": {
             "label": "Broken",
             "attributes": {
-                "296": {
+                "83": {
                     "label": "",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "328": {
+                "84": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {
-                        "329": {
+                        "85": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
@@ -26,30 +26,30 @@
             ],
             "type": "node_state"
         },
-        "71": {
+        "86": {
             "label": "Available",
             "attributes": {
-                "123": {
+                "99": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {
-                        "124": {
+                        "100": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
                         }
                     }
                 },
-                "125": {
+                "101": {
                     "label": "",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "157": {
+                "102": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {
-                        "158": {
+                        "103": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
@@ -63,21 +63,21 @@
             ],
             "type": "node_state"
         },
-        "84": {
+        "104": {
             "label": "Ready",
             "attributes": {
-                "159": {
+                "117": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {
-                        "160": {
+                        "118": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
                         }
                     }
                 },
-                "161": {
+                "119": {
                     "label": "",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
@@ -89,26 +89,26 @@
             ],
             "type": "node_state"
         },
-        "97": {
+        "120": {
             "label": "Running",
             "attributes": {
-                "193": {
+                "133": {
                     "label": "",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "225": {
+                "134": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {
-                        "226": {
+                        "135": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
                         }
                     }
                 },
-                "228": {
+                "136": {
                     "label": "",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
@@ -120,19 +120,19 @@
             ],
             "type": "node_state"
         },
-        "110": {
+        "137": {
             "label": "Done",
             "attributes": {
-                "261": {
+                "150": {
                     "label": "",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "293": {
+                "151": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {
-                        "294": {
+                        "152": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
@@ -146,68 +146,68 @@
             ],
             "type": "node_state"
         },
-        "126": {
-            "label": "126",
+        "153": {
+            "label": "PrepereToStart",
             "attributes": {
-                "127": {
+                "161": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "128": {
+                "162": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "129": {
+                "163": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "130": {
+                        "164": {
                             "label": "p",
-                            "value": "",
+                            "value": "1",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "131": {
+                "165": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "132": {
+                        "166": {
                             "label": "Reward",
-                            "value": 0.0,
+                            "value": 0.05700000002980232,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "133": {
+                "167": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "134": {
+                        "168": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "135": {
+                "169": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "136": {
+                        "170": {
                             "label": "Pre",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "142": {
+                "176": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "143": {
+                        "177": {
                             "label": "Post",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
@@ -221,68 +221,68 @@
             ],
             "type": "node_transition"
         },
-        "162": {
+        "183": {
             "label": "Start",
             "attributes": {
-                "163": {
+                "191": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "164": {
+                "192": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "165": {
+                "193": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "166": {
+                        "194": {
                             "label": "p",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "167": {
+                "195": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "168": {
+                        "196": {
                             "label": "Reward",
                             "value": 2.499999761581421,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "169": {
+                "197": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "170": {
+                        "198": {
                             "label": "Silent",
                             "value": true,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "171": {
+                "199": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "172": {
+                        "200": {
                             "label": "Pre",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "178": {
+                "206": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "179": {
+                        "207": {
                             "label": "Post",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
@@ -296,68 +296,68 @@
             ],
             "type": "node_transition"
         },
-        "194": {
-            "label": "194",
+        "213": {
+            "label": "Break",
             "attributes": {
-                "195": {
+                "221": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "196": {
+                "222": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "197": {
+                "223": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "198": {
+                        "224": {
                             "label": "p",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "199": {
+                "225": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "200": {
+                        "226": {
                             "label": "Reward",
                             "value": 0.0,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "201": {
+                "227": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "202": {
+                        "228": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "203": {
+                "229": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "204": {
+                        "230": {
                             "label": "Pre",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "210": {
+                "236": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "211": {
+                        "237": {
                             "label": "Post",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
@@ -371,68 +371,68 @@
             ],
             "type": "node_transition"
         },
-        "229": {
-            "label": "229",
+        "243": {
+            "label": "End",
             "attributes": {
-                "230": {
+                "251": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "231": {
+                "252": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "232": {
+                "253": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "233": {
+                        "254": {
                             "label": "p",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "234": {
+                "255": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "235": {
+                        "256": {
                             "label": "Reward",
                             "value": 0.0,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "236": {
+                "257": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "237": {
+                        "258": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "238": {
+                "259": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "239": {
+                        "260": {
                             "label": "Pre",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "245": {
+                "266": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "246": {
+                        "267": {
                             "label": "Post",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
@@ -446,68 +446,68 @@
             ],
             "type": "node_transition"
         },
-        "262": {
-            "label": "262",
+        "273": {
+            "label": "Reconfig",
             "attributes": {
-                "263": {
+                "281": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "264": {
+                "282": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "265": {
+                "283": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "266": {
+                        "284": {
                             "label": "p",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "267": {
+                "285": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "268": {
+                        "286": {
                             "label": "Reward",
                             "value": 0.0,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "269": {
+                "287": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "270": {
+                        "288": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "271": {
+                "289": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "272": {
+                        "290": {
                             "label": "Pre",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "278": {
+                "296": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "279": {
+                        "297": {
                             "label": "Post",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
@@ -521,68 +521,68 @@
             ],
             "type": "node_transition"
         },
-        "297": {
-            "label": "297",
+        "303": {
+            "label": "Repair",
             "attributes": {
-                "298": {
+                "311": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "299": {
+                "312": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "300": {
+                "313": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "301": {
+                        "314": {
                             "label": "p",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "302": {
+                "315": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "303": {
+                        "316": {
                             "label": "Reward",
                             "value": 0.0,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "304": {
+                "317": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "305": {
+                        "318": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "306": {
+                "319": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "307": {
+                        "320": {
                             "label": "Pre",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "313": {
+                "326": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "314": {
+                        "327": {
                             "label": "Post",
                             "value": "",
                             "type": "mvAppItemType::mvInputText"
@@ -598,53 +598,53 @@
         }
     },
     "links": {
-        "152": {
-            "start_attr": 125,
-            "end_attr": 127
+        "333": {
+            "start_attr": 101,
+            "end_attr": 161
         },
-        "188": {
-            "start_attr": 161,
-            "end_attr": 163
+        "334": {
+            "start_attr": 119,
+            "end_attr": 191
         },
-        "220": {
-            "start_attr": 193,
-            "end_attr": 195
+        "335": {
+            "start_attr": 133,
+            "end_attr": 221
         },
-        "227": {
-            "start_attr": 164,
-            "end_attr": 225
+        "336": {
+            "start_attr": 192,
+            "end_attr": 134
         },
-        "255": {
-            "start_attr": 228,
-            "end_attr": 230
+        "337": {
+            "start_attr": 136,
+            "end_attr": 251
         },
-        "260": {
-            "start_attr": 128,
-            "end_attr": 159
+        "338": {
+            "start_attr": 162,
+            "end_attr": 117
         },
-        "288": {
-            "start_attr": 261,
-            "end_attr": 263
+        "339": {
+            "start_attr": 150,
+            "end_attr": 281
         },
-        "295": {
-            "start_attr": 293,
-            "end_attr": 231
+        "340": {
+            "start_attr": 151,
+            "end_attr": 252
         },
-        "323": {
-            "start_attr": 296,
-            "end_attr": 298
+        "341": {
+            "start_attr": 83,
+            "end_attr": 311
         },
-        "330": {
-            "start_attr": 328,
-            "end_attr": 196
+        "342": {
+            "start_attr": 84,
+            "end_attr": 222
         },
-        "331": {
-            "start_attr": 157,
-            "end_attr": 264
+        "343": {
+            "start_attr": 102,
+            "end_attr": 282
         },
-        "332": {
-            "start_attr": 123,
-            "end_attr": 299
+        "344": {
+            "start_attr": 99,
+            "end_attr": 312
         }
     }
 }
