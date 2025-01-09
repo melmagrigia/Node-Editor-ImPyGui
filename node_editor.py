@@ -315,6 +315,56 @@ def save_json_file(sender, app_data, user_data):
 
 popup_values_editor = ["Add Node"]
 
+# Callback for handling double-click events
+def handle_node_double_click(sender, app_data, user_data):
+    if dpg.is_item_hovered("editor"):
+        for node in dpg.get_item_children("editor", 1):
+            if dpg.is_item_hovered(node):
+                # Retrieve node details from dictionary
+                get_node_data("editor")
+                node_data = dict_for_json_export["nodes"].get(node, None)
+                if not node_data or node_data["type"] != "node_transition":
+                    return
+                # Get attributes from the node
+                attributes = node_data["attributes"]
+
+                # Create a side window if not already created
+                if dpg.does_item_exist("side_window"):
+                    dpg.delete_item("side_window", children_only=True)
+                    dpg.delete_item("side_window")
+                #with dpg.child_window(parent="windows_group", width=700, autosize_y=True, tag="side_window"):
+                with dpg.window(modal=True, label="Node Transition Details", tag="side_window", width=400, pos=(700, 100)):
+                    dpg.add_text("Node Details:")
+                    print("What")
+                    dpg.add_text(f"Editing Node ID: {node}")
+                    for attr_name, attr_value in attributes.items():
+                        for input_id, input_data in attr_value["inputs"].items():
+                            if input_data["label"] == "p":
+                                dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                            elif input_data["label"] == "Reward":
+                                dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                            elif input_data["label"] == "Silent":
+                                dpg.add_checkbox(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                            elif input_data["label"] == "Pre":
+                                with dpg.child_window(width=200, height=90, border=True):
+                                    dpg.add_text(default_value="PRE", indent=5)
+                                    dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
+                                                        default_value=input_data["value"], callback=check_pre_post)
+                                    dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+                            elif input_data["label"] == "Post":
+                                with dpg.child_window(width=200, height=90, border=True):
+                                    dpg.add_text(default_value="POST", indent=5)
+                                    dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
+                                                        default_value=input_data["value"], callback=check_pre_post)
+                                    dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+                            else:
+                                dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                        #dpg.add_input_text(label=attr_name, default_value=attr_value, tag=f"edit_{node}_{attr_name}")
+                    #dpg.add_button(label="Done", callback=lambda: save_changes(node))
+    else:
+        return
+#        dpg.add_button(label="Save Changes", callback=lambda: save_changes(node_id))
+
 def show_popup(sender, app_data):
     if dpg.is_item_hovered("editor"):
         for node in dpg.get_item_children("editor", 1):
@@ -414,7 +464,7 @@ with dpg.file_dialog(directory_selector=False, show=False, callback=save_json_fi
     dpg.add_file_extension(".json", color=(150, 255, 150, 255)) 
 
 with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True, no_move=True, no_resize=True, no_scrollbar=True):
-    with dpg.group(horizontal=True, width=0):
+    with dpg.group(id="windows_group", horizontal=True):
         with dpg.child_window(width=400, autosize_y=True):
             dpg.add_text("Right Click to Add a State Node", bullet=True)
             dpg.add_text("Right Click on a State Node to Open Actions Dialog", bullet=True)
@@ -430,6 +480,7 @@ with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True,
 
 with dpg.handler_registry():
     dpg.add_mouse_click_handler(callback=show_popup, button=dpg.mvMouseButton_Right)
+    dpg.add_mouse_double_click_handler(callback=handle_node_double_click, button=dpg.mvMouseButton_Left)
 
 # Create the popup (initially hidden)
 with dpg.window(modal=True, show=False, tag="node_editor_popup"):
@@ -492,17 +543,17 @@ dpg.bind_font(default_font)
 # Create a light theme
 with dpg.theme() as light_theme:
     with dpg.theme_component(dpg.mvAll):
-        # dpg.add_theme_color(dpg.mvThemeCol_Text, (0, 0, 0), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_WindowBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_Border, (200, 200, 200), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_Button, (200, 200, 200), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, (170, 170, 170), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, (150, 150, 150), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_PopupBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_FrameBgHovered, (230, 230, 230), category=dpg.mvThemeCat_Core)
-        # dpg.add_theme_color(dpg.mvThemeCol_FrameBgActive, (210, 210, 210), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_Text, (0, 0, 0), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_WindowBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_Border, (200, 200, 200), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_Button, (200, 200, 200), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, (170, 170, 170), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, (150, 150, 150), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_PopupBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_FrameBgHovered, (230, 230, 230), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_color(dpg.mvThemeCol_FrameBgActive, (210, 210, 210), category=dpg.mvThemeCat_Core)
         dpg.add_theme_style(dpg.mvNodeStyleVar_PinTriangleSideLength, 15, category=dpg.mvThemeCat_Nodes)
 
 # Bind the theme globally

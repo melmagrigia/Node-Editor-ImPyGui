@@ -1,0 +1,466 @@
+{
+    "nodes": {
+        "71": {
+            "label": "s1",
+            "attributes": {
+                "84": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "85": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "86": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "87": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "88": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "89": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                303,
+                358
+            ],
+            "type": "node_state"
+        },
+        "90": {
+            "label": "StartSorting",
+            "attributes": {
+                "98": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "99": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "100": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "101": {
+                            "label": "p",
+                            "value": "1",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "102": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "103": {
+                            "label": "Reward",
+                            "value": 0.014000000432133675,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "104": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "105": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "106": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "109": {
+                            "label": "Pre",
+                            "value": "light_barrier_input == true",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "113": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "116": {
+                            "label": "Post",
+                            "value": "light_barrier_input == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                528,
+                173
+            ],
+            "type": "node_transition"
+        },
+        "120": {
+            "label": "s2",
+            "attributes": {
+                "133": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "134": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "135": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                872,
+                194
+            ],
+            "type": "node_state"
+        },
+        "136": {
+            "label": "s3",
+            "attributes": {
+                "149": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "150": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "151": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                921,
+                460
+            ],
+            "type": "node_state"
+        },
+        "152": {
+            "label": "StopSorting",
+            "attributes": {
+                "160": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "161": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "162": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "163": {
+                            "label": "p",
+                            "value": "$p_{ok}$",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "164": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "165": {
+                            "label": "Reward",
+                            "value": 0.12700000405311584,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "166": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "167": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "168": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "171": {
+                            "label": "Pre",
+                            "value": "light_barrier_input == false and (light_barrier_white == true or light_barrier_red == true or light_barrier_blue == true)",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "175": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "178": {
+                            "label": "Post",
+                            "value": "errors == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                697,
+                317
+            ],
+            "type": "node_transition"
+        },
+        "182": {
+            "label": "Break",
+            "attributes": {
+                "190": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "191": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "192": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "193": {
+                            "label": "p",
+                            "value": "$(1-p_{ok})$",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "194": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "195": {
+                            "label": "Reward",
+                            "value": 0.23499999940395355,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "196": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "197": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "198": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "201": {
+                            "label": "Pre",
+                            "value": "errors == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "205": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "208": {
+                            "label": "Post",
+                            "value": "errors == true",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                517,
+                461
+            ],
+            "type": "node_transition"
+        },
+        "212": {
+            "label": "Repair",
+            "attributes": {
+                "220": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "221": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "222": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "223": {
+                            "label": "p",
+                            "value": "1",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "224": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "225": {
+                            "label": "Reward",
+                            "value": 0.9800000190734863,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "226": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "227": {
+                            "label": "Silent",
+                            "value": true,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "228": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "231": {
+                            "label": "Pre",
+                            "value": "errors == true",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "235": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "238": {
+                            "label": "Post",
+                            "value": "errors == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                546,
+                640
+            ],
+            "type": "node_transition"
+        }
+    },
+    "links": {
+        "242": {
+            "start_attr": 84,
+            "end_attr": 98
+        },
+        "243": {
+            "start_attr": 99,
+            "end_attr": 133
+        },
+        "244": {
+            "start_attr": 135,
+            "end_attr": 160
+        },
+        "245": {
+            "start_attr": 85,
+            "end_attr": 161
+        },
+        "246": {
+            "start_attr": 87,
+            "end_attr": 190
+        },
+        "247": {
+            "start_attr": 191,
+            "end_attr": 149
+        },
+        "248": {
+            "start_attr": 151,
+            "end_attr": 220
+        },
+        "249": {
+            "start_attr": 88,
+            "end_attr": 221
+        }
+    },
+    "short": [
+        {
+            "Probability": "1",
+            "Reward": 0.014000000432133675,
+            "Silent": false,
+            "Preconditions": "light_barrier_input == true",
+            "Effects": "light_barrier_input == false",
+            "operation id": "StartSorting"
+        },
+        {
+            "Probability": "$p_{ok}$",
+            "Reward": 0.12700000405311584,
+            "Silent": false,
+            "Preconditions": "light_barrier_input == false and (light_barrier_white == true or light_barrier_red == true or light_barrier_blue == true)",
+            "Effects": "errors == false",
+            "operation id": "StopSorting"
+        },
+        {
+            "Probability": "$(1-p_{ok})$",
+            "Reward": 0.23499999940395355,
+            "Silent": false,
+            "Preconditions": "errors == false",
+            "Effects": "errors == true",
+            "operation id": "Break"
+        },
+        {
+            "Probability": "1",
+            "Reward": 0.9800000190734863,
+            "Silent": true,
+            "Preconditions": "errors == true",
+            "Effects": "errors == false",
+            "operation id": "Repair"
+        }
+    ]
+}
