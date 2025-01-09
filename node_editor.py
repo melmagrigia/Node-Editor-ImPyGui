@@ -9,7 +9,8 @@ dpg.create_context()
 
 dict_for_json_export = {
     "nodes": {},
-    "links": {}
+    "links": {},
+    "short": []
 }
 
 list_json = []
@@ -63,6 +64,7 @@ def get_node_data(node_editor_id):
                             input_label = dpg.get_item_label(nested_input)
                             input_value = dpg.get_value(nested_input)
                             input_type = dpg.get_item_type(nested_input)
+                            input_id = nested_input
                             break
                 else:
                     # Collect the input field's value and label
@@ -99,6 +101,7 @@ def get_node_data(node_editor_id):
         if node_type == "node_transition":
             attributes_short["operation id"] = node_label
             list_json.append(attributes_short)
+        dict_for_json_export["short"] = list_json
     return dict_for_json_export
 
 # callback runs when user attempts to connect attributes
@@ -190,12 +193,12 @@ def add_node_link_callback(sender, app_data, user_data):
 
 def add_preconditions_group(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Preconditions", attribute_type=dpg.mvNode_Attr_Static):
-        with dpg.child_window(width=200, height=90, border=True):
+        with dpg.child_window(width=200, height=90, border=True, show=False):
             dpg.add_text(default_value="PRE", indent=5)
             dpg.add_input_text(multiline=True, tracked=True, width=200, height=63, label="Pre", callback=check_pre_post)
             dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
     with dpg.node_attribute(parent=sender, label="Effects", attribute_type=dpg.mvNode_Attr_Static):
-        with dpg.child_window(width=200, height=90, border=True):
+        with dpg.child_window(width=200, height=90, border=True, show=False):
             dpg.add_text(default_value="POST", indent=5)
             dpg.add_input_text(multiline=True, tracked=True, width=200, height=63, label="Post", callback=check_pre_post)
             dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
@@ -226,15 +229,15 @@ def create_background_theme(color):
 
 def add_static_att_silent(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Silent", attribute_type=dpg.mvNode_Attr_Static):
-        dpg.add_checkbox(label="Silent")
+        dpg.add_checkbox(label="Silent", show=False)
 
 def add_static_att(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
-        dpg.add_input_text(label="p", width=150)
+        dpg.add_input_text(label="p", width=150, show=False)
 
 def add_static_att_float(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Reward", attribute_type=dpg.mvNode_Attr_Static):
-        dpg.add_input_float(label="Reward", width=150)
+        dpg.add_input_float(label="Reward", width=150, show=False)
 
 def add_in_att_no_input_transition(sender, app_data, user_data):
     with dpg.node_attribute(parent=sender, label=user_data) as att_id:
@@ -323,6 +326,7 @@ def handle_node_double_click(sender, app_data, user_data):
                 # Retrieve node details from dictionary
                 get_node_data("editor")
                 node_data = dict_for_json_export["nodes"].get(node, None)
+                node_id_id = node
                 if not node_data or node_data["type"] != "node_transition":
                     return
                 # Get attributes from the node
@@ -332,38 +336,47 @@ def handle_node_double_click(sender, app_data, user_data):
                 if dpg.does_item_exist("side_window"):
                     dpg.delete_item("side_window", children_only=True)
                     dpg.delete_item("side_window")
-                #with dpg.child_window(parent="windows_group", width=700, autosize_y=True, tag="side_window"):
                 with dpg.window(modal=True, label="Node Transition Details", tag="side_window", width=400, pos=(700, 100)):
-                    dpg.add_text("Node Details:")
-                    print("What")
-                    dpg.add_text(f"Editing Node ID: {node}")
+                    dpg.add_text(f"Editing Node ID: {node_data["label"]}")
                     for attr_name, attr_value in attributes.items():
                         for input_id, input_data in attr_value["inputs"].items():
                             if input_data["label"] == "p":
-                                dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                                dpg.add_input_text(tag=str(input_id)+'_'+str(node), width=150, label=input_data["label"], default_value=input_data["value"])
                             elif input_data["label"] == "Reward":
-                                dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                                dpg.add_input_float(tag=str(input_id)+'_'+str(node), width=150, label=input_data["label"], default_value=input_data["value"])
                             elif input_data["label"] == "Silent":
-                                dpg.add_checkbox(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                                dpg.add_checkbox(tag=str(input_id)+'_'+str(node), label=input_data["label"], default_value=input_data["value"])
                             elif input_data["label"] == "Pre":
-                                with dpg.child_window(width=200, height=90, border=True):
-                                    dpg.add_text(default_value="PRE", indent=5)
-                                    dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
-                                                        default_value=input_data["value"], callback=check_pre_post)
-                                    dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+                                # with dpg.child_window(width=200, height=90, border=True):
+                                dpg.add_text(default_value="PRE", indent=5)
+                                dpg.add_input_text(tag=str(input_id)+'_'+str(node), multiline=True, tracked=False, width=200, height=63, 
+                                                    default_value=input_data["value"], callback=check_pre_post)
+                                    # dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
                             elif input_data["label"] == "Post":
-                                with dpg.child_window(width=200, height=90, border=True):
-                                    dpg.add_text(default_value="POST", indent=5)
-                                    dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
-                                                        default_value=input_data["value"], callback=check_pre_post)
-                                    dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
+                                # with dpg.child_window(width=200, height=90, border=True):
+                                dpg.add_text(default_value="POST", indent=5)
+                                dpg.add_input_text(tag=str(input_id)+'_'+str(node), multiline=True, tracked=False, width=200, height=63, 
+                                                    default_value=input_data["value"], callback=check_pre_post)
+                                    # dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
                             else:
-                                dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
-                        #dpg.add_input_text(label=attr_name, default_value=attr_value, tag=f"edit_{node}_{attr_name}")
-                    #dpg.add_button(label="Done", callback=lambda: save_changes(node))
+                                dpg.add_text(tag=str(input_id)+'_'+str(node), label=input_data["label"], default_value=input_data["value"])
+                    dpg.add_button(label="Done", callback=lambda: (save_changes(node_id_id), dpg.configure_item("side_window", show=False)))
     else:
         return
-#        dpg.add_button(label="Save Changes", callback=lambda: save_changes(node_id))
+
+# Callback to save changes back to the dictionary
+def save_changes(node):
+    node_data = dict_for_json_export["nodes"].get(node, None)
+    attributes = node_data["attributes"]
+    for attr_name, attr_value in attributes.items():
+        for input_id, input_data in attr_value["inputs"].items():
+            field_value = dpg.get_value(str(input_id)+'_'+str(node))
+            #print(input_id, str(input_id)+'_'+str(node))
+            #print(dpg.get_value(input_id), field_value)
+            if dpg.does_item_exist(input_id):
+                dpg.set_value(input_id, field_value)
+            else:
+                print(f"Item with ID {input_id} does not exist.")
 
 def show_popup(sender, app_data):
     if dpg.is_item_hovered("editor"):
@@ -418,22 +431,23 @@ def import_json(sender, app_data, user_data):
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
                         if input_data["label"] == "p":
-                            dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                            dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], show=False)
                         elif input_data["label"] == "Reward":
-                            dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"])
+                            dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], show=False)
                         elif input_data["label"] == "Silent":
-                            dpg.add_checkbox(tag=input_id, label=input_data["label"], default_value=input_data["value"])
+                            dpg.add_checkbox(tag=input_id, label=input_data["label"], default_value=input_data["value"], show=False)
                         elif input_data["label"] == "Pre":
-                            with dpg.child_window(width=200, height=90, border=True):
+                            with dpg.child_window(width=200, height=90, border=True, show=False):
                                 dpg.add_text(default_value="PRE", indent=5)
-                                dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
-                                                   default_value=input_data["value"], callback=check_pre_post)
+                                dpg.add_input_text(tag=input_id, multiline=True, tracked=False, width=200, height=63, label=input_data["label"], 
+                                                   default_value=input_data["value"])
                                 dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
                         elif input_data["label"] == "Post":
-                            with dpg.child_window(width=200, height=90, border=True):
+                            with dpg.child_window(width=200, height=90, border=True, show=False):
                                 dpg.add_text(default_value="POST", indent=5)
-                                dpg.add_input_text(tag=input_id, multiline=True, tracked=True, width=200, height=63, label=input_data["label"], 
-                                                   default_value=input_data["value"], callback=check_pre_post)
+                                dpg.add_input_text(tag=input_id, multiline=True, tracked=False, width=200, height=63, label=input_data["label"], 
+                                                   default_value=input_data["value"])
+
                                 dpg.bind_item_theme(dpg.last_container(), create_background_theme((119, 153, 51)))
                         else:
                             dpg.add_text(tag=input_id, label=input_data["label"], default_value=input_data["value"])
@@ -464,11 +478,12 @@ with dpg.file_dialog(directory_selector=False, show=False, callback=save_json_fi
     dpg.add_file_extension(".json", color=(150, 255, 150, 255)) 
 
 with dpg.window(id="node_editor_window", label="Node Editor", no_title_bar=True, no_move=True, no_resize=True, no_scrollbar=True):
-    with dpg.group(id="windows_group", horizontal=True):
+    with dpg.group(horizontal=True, width=0):
         with dpg.child_window(width=400, autosize_y=True):
             dpg.add_text("Right Click to Add a State Node", bullet=True)
             dpg.add_text("Right Click on a State Node to Open Actions Dialog", bullet=True)
             dpg.add_text("Ctrl+Click to remove a link", bullet=True)
+            dpg.add_text("Double Click on Transition Nodes to open \n the Attributes window", bullet=True)
             dpg.add_button(label="Export", callback=json_export)
             dpg.add_button(label="Import", callback=json_import)
             dpg.add_button(label="Generate API Stub", callback=lambda: dpg.show_item("generate_stub_popup"))
@@ -543,17 +558,17 @@ dpg.bind_font(default_font)
 # Create a light theme
 with dpg.theme() as light_theme:
     with dpg.theme_component(dpg.mvAll):
-        dpg.add_theme_color(dpg.mvThemeCol_Text, (0, 0, 0), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_WindowBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_Border, (200, 200, 200), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_Button, (200, 200, 200), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, (170, 170, 170), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, (150, 150, 150), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_PopupBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_FrameBgHovered, (230, 230, 230), category=dpg.mvThemeCat_Core)
-        dpg.add_theme_color(dpg.mvThemeCol_FrameBgActive, (210, 210, 210), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_Text, (0, 0, 0), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_WindowBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_Border, (200, 200, 200), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_Button, (200, 200, 200), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, (170, 170, 170), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, (150, 150, 150), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_PopupBg, (240, 240, 240), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_ChildBg, (255, 255, 255), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_FrameBgHovered, (230, 230, 230), category=dpg.mvThemeCat_Core)
+        # dpg.add_theme_color(dpg.mvThemeCol_FrameBgActive, (210, 210, 210), category=dpg.mvThemeCat_Core)
         dpg.add_theme_style(dpg.mvNodeStyleVar_PinTriangleSideLength, 15, category=dpg.mvThemeCat_Nodes)
 
 # Bind the theme globally
