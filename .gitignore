@@ -8,4 +8,5 @@ node_editor.spec
 stuff.py
 dpg.ini
 d.py
+node_editor_copy.py
 test_nested.json

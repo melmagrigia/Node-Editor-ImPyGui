@@ -3,27 +3,27 @@
         "72": {
             "label": "Ready",
             "attributes": {
-                "111": {
+                "85": {
                     "label": "",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "149": {
+                "86": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {
-                        "150": {
+                        "87": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
                         }
                     }
                 },
-                "216": {
+                "88": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {
-                        "217": {
+                        "89": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
@@ -37,21 +37,21 @@
             ],
             "type": "node_state"
         },
-        "85": {
+        "90": {
             "label": "Done",
             "attributes": {
-                "143": {
+                "103": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {
-                        "144": {
+                        "104": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
                         }
                     }
                 },
-                "184": {
+                "105": {
                     "label": "",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
@@ -63,21 +63,21 @@
             ],
             "type": "node_state"
         },
-        "98": {
+        "106": {
             "label": "Broken",
             "attributes": {
-                "145": {
+                "119": {
                     "label": "node state in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {
-                        "146": {
+                        "120": {
                             "label": "",
                             "value": "",
                             "type": "mvAppItemType::mvText"
                         }
                     }
                 },
-                "151": {
+                "121": {
                     "label": "",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
@@ -89,293 +89,320 @@
             ],
             "type": "node_state"
         },
-        "112": {
-            "label": "StartSorting",
+        "122": {
+            "label": "StartProcessing",
             "attributes": {
-                "113": {
+                "130": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "114": {
+                "131": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "115": {
+                "132": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "116": {
+                        "133": {
                             "label": "p",
-                            "value": 0.0,
+                            "value": 0.7000000476837158,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "117": {
+                "134": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "118": {
+                        "135": {
                             "label": "Reward",
-                            "value": 0.0,
+                            "value": 0.20000000298023224,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "119": {
+                "136": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "120": {
+                        "137": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "121": {
+                "138": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "124": {
+                        "141": {
                             "label": "Pre",
-                            "value": "",
+                            "value": "light_barrier_input == true",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "128": {
+                "145": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "131": {
+                        "148": {
                             "label": "Post",
-                            "value": "",
+                            "value": "light_barrier_input == false",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 }
             },
             "position": [
-                270,
-                93
+                265,
+                89
             ],
             "type": "node_transition"
         },
         "152": {
             "label": "Repair",
             "attributes": {
-                "153": {
+                "160": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "154": {
+                "161": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "155": {
+                "162": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "156": {
+                        "163": {
                             "label": "p",
-                            "value": 0.0,
+                            "value": 1.0000001192092896,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "157": {
+                "164": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "158": {
+                        "165": {
                             "label": "Reward",
-                            "value": 0.0,
+                            "value": 0.30000001192092896,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "159": {
+                "166": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "160": {
+                        "167": {
                             "label": "Silent",
-                            "value": false,
+                            "value": true,
                             "type": "mvAppItemType::mvCheckbox"
-                        }
-                    }
-                },
-                "161": {
-                    "label": "Preconditions",
-                    "type": "mvNode_Attr_Static",
-                    "inputs": {
-                        "164": {
-                            "label": "Pre",
-                            "value": "",
-                            "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
                 "168": {
-                    "label": "Effects",
+                    "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
                         "171": {
+                            "label": "Pre",
+                            "value": "errors == true",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "175": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "178": {
                             "label": "Post",
-                            "value": "",
+                            "value": "errors == false",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 }
             },
             "position": [
-                277,
-                406
+                273,
+                471
             ],
             "type": "node_transition"
         },
-        "185": {
-            "label": "StopSorting",
+        "182": {
+            "label": "StopProcessing",
             "attributes": {
-                "186": {
+                "190": {
                     "label": "node transition in",
                     "type": "mvNode_Attr_Output",
                     "inputs": {}
                 },
-                "187": {
+                "191": {
                     "label": "node transition out",
                     "type": "mvNode_Attr_Input",
                     "inputs": {}
                 },
-                "188": {
+                "192": {
                     "label": "Probability",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "189": {
+                        "193": {
                             "label": "p",
-                            "value": 0.0,
+                            "value": 0.9000000953674316,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "190": {
+                "194": {
                     "label": "Reward",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "191": {
+                        "195": {
                             "label": "Reward",
-                            "value": 0.0,
+                            "value": 0.20000000298023224,
                             "type": "mvAppItemType::mvInputFloat"
                         }
                     }
                 },
-                "192": {
+                "196": {
                     "label": "Silent",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "193": {
+                        "197": {
                             "label": "Silent",
                             "value": false,
                             "type": "mvAppItemType::mvCheckbox"
                         }
                     }
                 },
-                "194": {
+                "198": {
                     "label": "Preconditions",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "197": {
+                        "201": {
                             "label": "Pre",
-                            "value": "",
+                            "value": "light_barrier_input == false and (light_barrier_white == true or light_barrier_red == true or light_barrier_blue == true)",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 },
-                "201": {
+                "205": {
                     "label": "Effects",
                     "type": "mvNode_Attr_Static",
                     "inputs": {
-                        "204": {
+                        "208": {
                             "label": "Post",
-                            "value": "",
+                            "value": "errors == false",
                             "type": "mvAppItemType::mvInputText"
                         }
                     }
                 }
             },
             "position": [
-                255,
-                230
+                283,
+                287
             ],
             "type": "node_transition"
         }
     },
     "links": {
-        "138": {
-            "start_attr": 111,
-            "end_attr": 113
+        "212": {
+            "start_attr": 85,
+            "end_attr": 130
         },
-        "147": {
-            "start_attr": 114,
-            "end_attr": 143
+        "213": {
+            "start_attr": 131,
+            "end_attr": 103
         },
-        "148": {
-            "start_attr": 114,
-            "end_attr": 145
+        "214": {
+            "start_attr": 131,
+            "end_attr": 119
         },
-        "178": {
-            "start_attr": 151,
-            "end_attr": 153
+        "215": {
+            "start_attr": 121,
+            "end_attr": 160
         },
-        "183": {
-            "start_attr": 149,
-            "end_attr": 154
+        "216": {
+            "start_attr": 86,
+            "end_attr": 161
         },
-        "211": {
-            "start_attr": 184,
-            "end_attr": 186
+        "217": {
+            "start_attr": 105,
+            "end_attr": 190
         },
         "218": {
-            "start_attr": 216,
-            "end_attr": 187
+            "start_attr": 88,
+            "end_attr": 191
         }
     },
     "short": [
         {
-            "Probability": 0.0,
-            "Reward": 0.0,
+            "Probability": 0.7000000476837158,
+            "Reward": 0.20000000298023224,
             "Silent": false,
-            "Preconditions": "",
-            "Effects": "",
-            "operation id": "StartSorting",
+            "Preconditions": "light_barrier_input == true",
+            "Effects": "light_barrier_input == false",
+            "operation id": "StartProcessing",
             "start": "Ready",
             "end": "Done",
             "end_b": "Broken"
         },
         {
-            "Probability": 0.0,
-            "Reward": 0.0,
-            "Silent": false,
-            "Preconditions": "",
-            "Effects": "",
+            "Probability": 1.0000001192092896,
+            "Reward": 0.30000001192092896,
+            "Silent": true,
+            "Preconditions": "errors == true",
+            "Effects": "errors == false",
             "operation id": "Repair",
             "start": "Broken",
             "end": "Ready"
         },
         {
-            "Probability": 0.0,
-            "Reward": 0.0,
+            "Probability": 0.9000000953674316,
+            "Reward": 0.20000000298023224,
             "Silent": false,
-            "Preconditions": "",
-            "Effects": "",
-            "operation id": "StopSorting",
+            "Preconditions": "light_barrier_input == false and (light_barrier_white == true or light_barrier_red == true or light_barrier_blue == true)",
+            "Effects": "errors == false",
+            "operation id": "StopProcessing",
             "start": "Done",
             "end": "Ready"
         }
-    ]
+    ],
+    "AIDA": {
+        "Ready": {
+            "StartProcessing": [
+                {
+                    "Done": 0.7000000476837158,
+                    "Broken": 0.2999999523162842
+                },
+                0.20000000298023224
+            ]
+        },
+        "Broken": {
+            "Repair": [
+                {
+                    "Ready": 1.0000001192092896
+                },
+                0.30000001192092896
+            ]
+        },
+        "Done": {
+            "StopProcessing": [
+                {
+                    "Ready": 0.9000000953674316
+                },
+                0.20000000298023224
+            ]
+        }
+    }
 }

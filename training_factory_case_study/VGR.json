@@ -1,0 +1,1444 @@
+{
+    "nodes": {
+        "72": {
+            "label": "Ready",
+            "attributes": {
+                "85": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "86": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "87": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "88": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "89": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "90": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "91": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "92": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "93": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "94": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "95": {
+                    "label": "",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "96": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "97": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "98": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "99": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "100": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {
+                        "101": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                -101,
+                248
+            ],
+            "type": "node_state"
+        },
+        "102": {
+            "label": "StoreDone",
+            "attributes": {
+                "115": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "116": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "117": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                893,
+                -43
+            ],
+            "type": "node_state"
+        },
+        "118": {
+            "label": "Broken",
+            "attributes": {
+                "131": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "132": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "133": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "134": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "135": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "136": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "137": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "138": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "139": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "140": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "141": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                993,
+                480
+            ],
+            "type": "node_state"
+        },
+        "142": {
+            "label": "Store",
+            "attributes": {
+                "150": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "151": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "152": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "153": {
+                            "label": "p",
+                            "value": 0.7000000476837158,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "154": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "155": {
+                            "label": "Reward",
+                            "value": 0.20000000298023224,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "156": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "157": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "158": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "161": {
+                            "label": "Pre",
+                            "value": "light_barrier_input == true",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "165": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "168": {
+                            "label": "Post",
+                            "value": "light_barrier_input == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                329,
+                -89
+            ],
+            "type": "node_transition"
+        },
+        "172": {
+            "label": "Repair",
+            "attributes": {
+                "180": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "181": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "182": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "183": {
+                            "label": "p",
+                            "value": 1.0000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "184": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "185": {
+                            "label": "Reward",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "186": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "187": {
+                            "label": "Silent",
+                            "value": true,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "188": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "191": {
+                            "label": "Pre",
+                            "value": "errors == true",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "195": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "198": {
+                            "label": "Post",
+                            "value": "errors == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                375,
+                828
+            ],
+            "type": "node_transition"
+        },
+        "202": {
+            "label": "Check_Store",
+            "attributes": {
+                "210": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "211": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "212": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "213": {
+                            "label": "p",
+                            "value": 0.9000000953674316,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "214": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "215": {
+                            "label": "Reward",
+                            "value": 0.20000000298023224,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "216": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "217": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "218": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "221": {
+                            "label": "Pre",
+                            "value": "light_barrier_input == false and (light_barrier_white == true or light_barrier_red == true or light_barrier_blue == true)",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "225": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "228": {
+                            "label": "Post",
+                            "value": "errors == false",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                307,
+                -30
+            ],
+            "type": "node_transition"
+        },
+        "232": {
+            "label": "OutsourceDone",
+            "attributes": {
+                "245": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "246": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "247": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                881,
+                58
+            ],
+            "type": "node_state"
+        },
+        "248": {
+            "label": "Outsource",
+            "attributes": {
+                "256": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "257": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "258": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "259": {
+                            "label": "p",
+                            "value": 0.0,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "260": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "261": {
+                            "label": "Reward",
+                            "value": 0.0,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "262": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "263": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "264": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "267": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "271": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "274": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                350,
+                120
+            ],
+            "type": "node_transition"
+        },
+        "278": {
+            "label": "Check_Outsource",
+            "attributes": {
+                "286": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "287": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "288": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "289": {
+                            "label": "p",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "290": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "291": {
+                            "label": "Reward",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "292": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "293": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "294": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "297": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "301": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "304": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                317,
+                233
+            ],
+            "type": "node_transition"
+        },
+        "308": {
+            "label": "PickupWhiteDone",
+            "attributes": {
+                "321": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "322": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "323": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                885,
+                155
+            ],
+            "type": "node_state"
+        },
+        "324": {
+            "label": "PickupRedDone",
+            "attributes": {
+                "337": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "338": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "339": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                899,
+                237
+            ],
+            "type": "node_state"
+        },
+        "340": {
+            "label": "PickupBlueDone",
+            "attributes": {
+                "353": {
+                    "label": "node state in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {
+                        "354": {
+                            "label": "",
+                            "value": "",
+                            "type": "mvAppItemType::mvText"
+                        }
+                    }
+                },
+                "355": {
+                    "label": "",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                }
+            },
+            "position": [
+                903,
+                347
+            ],
+            "type": "node_state"
+        },
+        "356": {
+            "label": "PickupWhite",
+            "attributes": {
+                "364": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "365": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "366": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "367": {
+                            "label": "p",
+                            "value": 0.20000000298023224,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "368": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "369": {
+                            "label": "Reward",
+                            "value": 0.20000000298023224,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "370": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "371": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "372": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "375": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "379": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "382": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                337,
+                395
+            ],
+            "type": "node_transition"
+        },
+        "386": {
+            "label": "PickupRed",
+            "attributes": {
+                "394": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "395": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "396": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "397": {
+                            "label": "p",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "398": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "399": {
+                            "label": "Reward",
+                            "value": 0.4000000059604645,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "400": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "401": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "402": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "405": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "409": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "412": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                547,
+                499
+            ],
+            "type": "node_transition"
+        },
+        "416": {
+            "label": "Check_PickupWhite",
+            "attributes": {
+                "424": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "425": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "426": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "427": {
+                            "label": "p",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "428": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "429": {
+                            "label": "Reward",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "430": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "431": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "432": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "435": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "439": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "442": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                353,
+                462
+            ],
+            "type": "node_transition"
+        },
+        "446": {
+            "label": "PickupBlue",
+            "attributes": {
+                "454": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "455": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "456": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "457": {
+                            "label": "p",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "458": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "459": {
+                            "label": "Reward",
+                            "value": 0.20000000298023224,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "460": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "461": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "462": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "465": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "469": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "472": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                387,
+                704
+            ],
+            "type": "node_transition"
+        },
+        "476": {
+            "label": "Check_PickupRed",
+            "attributes": {
+                "484": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "485": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "486": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "487": {
+                            "label": "p",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "488": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "489": {
+                            "label": "Reward",
+                            "value": 0.20000000298023224,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "490": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "491": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "492": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "495": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "499": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "502": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                387,
+                599
+            ],
+            "type": "node_transition"
+        },
+        "506": {
+            "label": "Check_PickupBlue",
+            "attributes": {
+                "514": {
+                    "label": "node transition in",
+                    "type": "mvNode_Attr_Output",
+                    "inputs": {}
+                },
+                "515": {
+                    "label": "node transition out",
+                    "type": "mvNode_Attr_Input",
+                    "inputs": {}
+                },
+                "516": {
+                    "label": "Probability",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "517": {
+                            "label": "p",
+                            "value": 0.10000000149011612,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "518": {
+                    "label": "Reward",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "519": {
+                            "label": "Reward",
+                            "value": 0.30000001192092896,
+                            "type": "mvAppItemType::mvInputFloat"
+                        }
+                    }
+                },
+                "520": {
+                    "label": "Silent",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "521": {
+                            "label": "Silent",
+                            "value": false,
+                            "type": "mvAppItemType::mvCheckbox"
+                        }
+                    }
+                },
+                "522": {
+                    "label": "Preconditions",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "525": {
+                            "label": "Pre",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                },
+                "529": {
+                    "label": "Effects",
+                    "type": "mvNode_Attr_Static",
+                    "inputs": {
+                        "532": {
+                            "label": "Post",
+                            "value": "",
+                            "type": "mvAppItemType::mvInputText"
+                        }
+                    }
+                }
+            },
+            "position": [
+                691,
+                771
+            ],
+            "type": "node_transition"
+        }
+    },
+    "links": {
+        "536": {
+            "start_attr": 85,
+            "end_attr": 150
+        },
+        "537": {
+            "start_attr": 151,
+            "end_attr": 115
+        },
+        "538": {
+            "start_attr": 151,
+            "end_attr": 131
+        },
+        "539": {
+            "start_attr": 133,
+            "end_attr": 180
+        },
+        "540": {
+            "start_attr": 86,
+            "end_attr": 181
+        },
+        "541": {
+            "start_attr": 117,
+            "end_attr": 210
+        },
+        "542": {
+            "start_attr": 88,
+            "end_attr": 211
+        },
+        "543": {
+            "start_attr": 90,
+            "end_attr": 256
+        },
+        "544": {
+            "start_attr": 257,
+            "end_attr": 245
+        },
+        "545": {
+            "start_attr": 257,
+            "end_attr": 134
+        },
+        "546": {
+            "start_attr": 247,
+            "end_attr": 286
+        },
+        "547": {
+            "start_attr": 91,
+            "end_attr": 287
+        },
+        "548": {
+            "start_attr": 93,
+            "end_attr": 364
+        },
+        "549": {
+            "start_attr": 365,
+            "end_attr": 321
+        },
+        "550": {
+            "start_attr": 94,
+            "end_attr": 394
+        },
+        "551": {
+            "start_attr": 395,
+            "end_attr": 337
+        },
+        "552": {
+            "start_attr": 323,
+            "end_attr": 424
+        },
+        "553": {
+            "start_attr": 365,
+            "end_attr": 136
+        },
+        "554": {
+            "start_attr": 395,
+            "end_attr": 138
+        },
+        "555": {
+            "start_attr": 95,
+            "end_attr": 454
+        },
+        "556": {
+            "start_attr": 455,
+            "end_attr": 353
+        },
+        "557": {
+            "start_attr": 455,
+            "end_attr": 140
+        },
+        "558": {
+            "start_attr": 96,
+            "end_attr": 425
+        },
+        "559": {
+            "start_attr": 339,
+            "end_attr": 484
+        },
+        "560": {
+            "start_attr": 98,
+            "end_attr": 485
+        },
+        "561": {
+            "start_attr": 355,
+            "end_attr": 514
+        },
+        "562": {
+            "start_attr": 100,
+            "end_attr": 515
+        }
+    },
+    "short": [
+        {
+            "Probability": 0.7000000476837158,
+            "Reward": 0.20000000298023224,
+            "Silent": false,
+            "Preconditions": "light_barrier_input == true",
+            "Effects": "light_barrier_input == false",
+            "operation id": "Store",
+            "start": "Ready",
+            "end": "StoreDone",
+            "end_b": "Broken"
+        },
+        {
+            "Probability": 1.0000001192092896,
+            "Reward": 0.30000001192092896,
+            "Silent": true,
+            "Preconditions": "errors == true",
+            "Effects": "errors == false",
+            "operation id": "Repair",
+            "start": "Broken",
+            "end": "Ready"
+        },
+        {
+            "Probability": 0.9000000953674316,
+            "Reward": 0.20000000298023224,
+            "Silent": false,
+            "Preconditions": "light_barrier_input == false and (light_barrier_white == true or light_barrier_red == true or light_barrier_blue == true)",
+            "Effects": "errors == false",
+            "operation id": "Check_Store",
+            "start": "StoreDone",
+            "end": "Ready"
+        },
+        {
+            "Probability": 0.0,
+            "Reward": 0.0,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "Outsource",
+            "start": "Ready",
+            "end": "OutsourceDone",
+            "end_b": "Broken"
+        },
+        {
+            "Probability": 0.30000001192092896,
+            "Reward": 0.30000001192092896,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "Check_Outsource",
+            "start": "OutsourceDone",
+            "end": "Ready"
+        },
+        {
+            "Probability": 0.20000000298023224,
+            "Reward": 0.20000000298023224,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "PickupWhite",
+            "start": "Ready",
+            "end": "PickupWhiteDone",
+            "end_b": "Broken"
+        },
+        {
+            "Probability": 0.30000001192092896,
+            "Reward": 0.4000000059604645,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "PickupRed",
+            "start": "Ready",
+            "end": "PickupRedDone",
+            "end_b": "Broken"
+        },
+        {
+            "Probability": 0.30000001192092896,
+            "Reward": 0.30000001192092896,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "Check_PickupWhite",
+            "start": "PickupWhiteDone",
+            "end": "Ready"
+        },
+        {
+            "Probability": 0.30000001192092896,
+            "Reward": 0.20000000298023224,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "PickupBlue",
+            "start": "Ready",
+            "end": "PickupBlueDone",
+            "end_b": "Broken"
+        },
+        {
+            "Probability": 0.30000001192092896,
+            "Reward": 0.20000000298023224,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "Check_PickupRed",
+            "start": "PickupRedDone",
+            "end": "Ready"
+        },
+        {
+            "Probability": 0.10000000149011612,
+            "Reward": 0.30000001192092896,
+            "Silent": false,
+            "Preconditions": "",
+            "Effects": "",
+            "operation id": "Check_PickupBlue",
+            "start": "PickupBlueDone",
+            "end": "Ready"
+        }
+    ],
+    "AIDA": {
+        "Ready": {
+            "Store": [
+                {
+                    "StoreDone": 0.7000000476837158,
+                    "Broken": 0.2999999523162842
+                },
+                0.20000000298023224
+            ],
+            "Outsource": [
+                {
+                    "OutsourceDone": 0.0,
+                    "Broken": 1.0
+                },
+                0.0
+            ],
+            "PickupWhite": [
+                {
+                    "PickupWhiteDone": 0.20000000298023224,
+                    "Broken": 0.7999999970197678
+                },
+                0.20000000298023224
+            ],
+            "PickupRed": [
+                {
+                    "PickupRedDone": 0.30000001192092896,
+                    "Broken": 0.699999988079071
+                },
+                0.4000000059604645
+            ],
+            "PickupBlue": [
+                {
+                    "PickupBlueDone": 0.30000001192092896,
+                    "Broken": 0.699999988079071
+                },
+                0.20000000298023224
+            ]
+        },
+        "Broken": {
+            "Repair": [
+                {
+                    "Ready": 1.0000001192092896
+                },
+                0.30000001192092896
+            ]
+        },
+        "StoreDone": {
+            "Check_Store": [
+                {
+                    "Ready": 0.9000000953674316
+                },
+                0.20000000298023224
+            ]
+        },
+        "OutsourceDone": {
+            "Check_Outsource": [
+                {
+                    "Ready": 0.30000001192092896
+                },
+                0.30000001192092896
+            ]
+        },
+        "PickupWhiteDone": {
+            "Check_PickupWhite": [
+                {
+                    "Ready": 0.30000001192092896
+                },
+                0.30000001192092896
+            ]
+        },
+        "PickupRedDone": {
+            "Check_PickupRed": [
+                {
+                    "Ready": 0.30000001192092896
+                },
+                0.20000000298023224
+            ]
+        },
+        "PickupBlueDone": {
+            "Check_PickupBlue": [
+                {
+                    "Ready": 0.10000000149011612
+                },
+                0.30000001192092896
+            ]
+        }
+    }
+}

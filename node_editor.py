@@ -10,7 +10,8 @@ dpg.create_context()
 dict_for_json_export = {
     "nodes": {},
     "links": {},
-    "short": []
+    "short": [],
+    "AIDA": {}
 }
 
 list_json = []
@@ -101,8 +102,79 @@ def get_node_data(node_editor_id):
         if node_type == "node_transition":
             attributes_short["operation id"] = node_label
             list_json.append(attributes_short)
+
+            associated_links = get_links_for_node(node_id)
+            for link_id, link_data in associated_links:
+                start = link_data["start_attr"]
+                end = link_data["end_attr"]
+                att_end_label = dpg.get_item_label(end)
+                att_st_label = dpg.get_item_label(start)
+                if att_end_label == "node transition in":
+                    parent_node_st = dpg.get_item_parent(start)
+                    attributes_short["start"] = dpg.get_item_label(parent_node_st)
+                if att_end_label == "node transition out":
+                    parent_node_st = dpg.get_item_parent(start)
+                    if "end" in attributes_short:
+                        attributes_short["end_b"] = dpg.get_item_label(parent_node_st)
+                    else:
+                        attributes_short["end"] = dpg.get_item_label(parent_node_st)
+                if att_st_label == "node transition in":
+                    parent_node_en = dpg.get_item_parent(end)
+                    attributes_short["start"] = dpg.get_item_label(parent_node_en)
+                if att_st_label == "node transition out":
+                    parent_node_en = dpg.get_item_parent(end)
+                    if "end" in attributes_short:
+                        attributes_short["end_b"] = dpg.get_item_label(parent_node_en)
+                    else:
+                        attributes_short["end"] = dpg.get_item_label(parent_node_en)
         dict_for_json_export["short"] = list_json
     return dict_for_json_export
+
+
+def transform_json(input_json):
+    """
+    Transform the input JSON into the specified format.
+
+    Args:
+        input_json (list): A list of dictionaries in the input format.
+
+    Returns:
+        dict: A dictionary in the desired output format.
+    """
+    output = {}
+
+    for item in input_json:
+        # Extract data
+        start_state = item.get("start")
+        end_state = item.get("end")
+        end_b_state = item.get("end_b")
+        operation_id = item.get("operation id")
+        probability = item.get("Probability", 0.0)
+        reward = item.get("Reward", 0.0)
+        unemployable_prob = 1 - probability
+
+        con_key = start_state
+        con_action_key = operation_id
+        if end_b_state:
+            con_value = (
+                {
+                    end_state: probability,
+                    end_b_state: unemployable_prob
+                } if unemployable_prob > 0.0 else {end_state: probability},
+                reward
+            )
+        else:
+            con_value = (
+                {
+                    end_state: probability
+                },
+                reward
+            )
+        output.setdefault(con_key, {})
+        output[con_key][con_action_key] = con_value
+
+    return output
+
 
 # callback runs when user attempts to connect attributes
 def link_callback(sender, app_data):
@@ -233,7 +305,7 @@ def add_static_att_silent(sender, app_data):
 
 def add_static_att(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Probability", attribute_type=dpg.mvNode_Attr_Static):
-        dpg.add_input_text(label="p", width=150, show=False)
+        dpg.add_input_float(label="p", width=150, show=False)
 
 def add_static_att_float(sender, app_data):
     with dpg.node_attribute(parent=sender, label="Reward", attribute_type=dpg.mvNode_Attr_Static):
@@ -311,6 +383,8 @@ def save_json_file(sender, app_data, user_data):
     
     if selected_file:
         get_node_data("editor")
+        ff = transform_json(dict_for_json_export["short"])
+        dict_for_json_export["AIDA"] = ff
         # Export the node data to the selected file
         with open(selected_file, "w") as outfile:
             json.dump(dict_for_json_export, outfile, indent=4, sort_keys=False)
@@ -341,7 +415,7 @@ def handle_node_double_click(sender, app_data, user_data):
                     for attr_name, attr_value in attributes.items():
                         for input_id, input_data in attr_value["inputs"].items():
                             if input_data["label"] == "p":
-                                dpg.add_input_text(tag=str(input_id)+'_'+str(node), width=150, label=input_data["label"], default_value=input_data["value"])
+                                dpg.add_input_float(tag=str(input_id)+'_'+str(node), width=150, label=input_data["label"], default_value=input_data["value"])
                             elif input_data["label"] == "Reward":
                                 dpg.add_input_float(tag=str(input_id)+'_'+str(node), width=150, label=input_data["label"], default_value=input_data["value"])
                             elif input_data["label"] == "Silent":
@@ -431,7 +505,7 @@ def import_json(sender, app_data, user_data):
                     # Create input fields with stored values
                     for input_id, input_data in attr_data["inputs"].items():
                         if input_data["label"] == "p":
-                            dpg.add_input_text(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], show=False)
+                            dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], show=False)
                         elif input_data["label"] == "Reward":
                             dpg.add_input_float(tag=input_id, width=150, label=input_data["label"], default_value=input_data["value"], show=False)
                         elif input_data["label"] == "Silent":
