@@ -1,5 +1,5 @@
-# Node-Editor-ImPyGui
-A Node editor Python App developed with [DearPyGui](https://github.com/hoffstadt/DearPyGui/tree/master).
+# Industrial API Editor
+A Node editor prototype Python App developed with [DearPyGui](https://github.com/hoffstadt/DearPyGui/tree/master).
 
 ## Install and run
 1. Create a virtual environment with venv or conda.
@@ -30,11 +30,13 @@ A Node editor Python App developed with [DearPyGui](https://github.com/hoffstadt
 
 ## Editor usage
 
-- Right Click to Add a State Node
+- Right Click to add a State Node
 
-- Right Click on a State Node to Open Actions Dialog
+- Right Click on node label to Open Actions Dialog
 
 - Ctrl+Click to remove a link
+
+- Double Click on Transition Nodes to open the Attributes window
 
 - Pressing the export button it's possible to save the current diagram into JSON file
 

@@ -609,7 +609,7 @@ with dpg.window(modal=True, show=False, tag="generate_stub_popup", width=500):
     dpg.add_separator()
     with dpg.group(horizontal=True):
         dpg.add_combo(items=frameworks_options, tag="framework_combo", width=100, label="Select Framework")
-        dpg.add_combo(items=languages_options, tag="language_combo", width=100, label="Select Language")
+        # dpg.add_combo(items=languages_options, tag="language_combo", width=100, label="Select Language")
     with dpg.group(horizontal=True):
         dpg.add_button(label="OK", width=75, callback=lambda: (dpg.configure_item("generate_stub_popup", show=False), 
                                                                POST_SERVER(openapi_path, dpg.get_value("framework_combo"), openapigen_url)))
@@ -651,7 +651,7 @@ dpg.bind_theme(light_theme)
 # For debug need to deactivate the thread management
 dpg.configure_app(manual_callback_management=True)
 
-dpg.create_viewport(title='FSM editor', width=1400, height=700)
+dpg.create_viewport(title='Industrial API Editor', width=1400, height=700)
 dpg.setup_dearpygui()
 resize_to_viewport(None, None)
 
