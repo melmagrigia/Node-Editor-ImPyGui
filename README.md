@@ -2,13 +2,14 @@
 A Node editor prototype Python App developed with [DearPyGui](https://github.com/hoffstadt/DearPyGui/tree/master).
 
 ## Install and run
-1. Create a virtual environment with venv or conda.
-2. Activate the environment
-3. Install dependencies
+1. Python version 3.12
+2. Create a virtual environment with venv or conda.
+3. Activate the environment
+4. Install dependencies
 
     `pip install -r ./requirements.txt`
 
-4. then start the application
+5. then start the application
 
     `python ./node_editor.py`
 
