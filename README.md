@@ -47,4 +47,12 @@ A Node editor prototype Python App developed with [DearPyGui](https://github.com
 
 ## Case Study 
 
-The case study conducted on the Fischertechnik training factory 4.0 24V you can find, in the training factory case study folder, all the files related. A controller Python file for each component of the factory and an node red API wrapper file that perform the requests to the IoT Gateway of the factory.
+The case study conducted on the Fischertechnik training factory 4.0 24V you can find, in the training_factory_case_study folder, all the files related. A controller Python file for each component of the factory and an node red API wrapper file that perform the requests to the IoT Gateway of the factory.
+
+## User Study
+To evaluate the usefulness and practicality in terms of use of the Industrial API Editor case tool, a user study in two phases was conducted.
+Carried out by involving N possible users of the tool in question, they were asked
+to solve, using our software prototype, a modeling exercise on some manufacturing asset and generate the related Industrial 4.0 APIs.
+They were then asked to answer a questionnaire to receive feedback regarding
+their level of satisfaction and ease of use experienced during the previous phase.
+In the user_study folder, you can find both the modeling exercise document and the results of thr questionnaire.
