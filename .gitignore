@@ -1,6 +1,5 @@
 .vscode/
 .vagrant/
-zips/
 __pycache__/
 build/
 dist/
@@ -10,3 +9,7 @@ dpg.ini
 d.py
 node_editor_copy.py
 test_nested.json
+zips/python-flask-server
+zips/python-flask-server_hbw
+zips/python-flask-server_vgr
+zips/python-flask-server_mpo
